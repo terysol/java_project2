@@ -28,6 +28,7 @@ public class ShowSeat extends JFrame{
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setLayout(null);
 		
+		System.out.println("Test");
 		// left ÆÐ³Î
 		left.setBackground(new Color(128,0,128));
 		left.setBounds(0, 0, 1350, 1000);
