@@ -4,12 +4,19 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+
+import database.DBfood_list;
 
 public class ShowSeat extends JFrame{
 	JPanel left=new JPanel();
@@ -18,17 +25,34 @@ public class ShowSeat extends JFrame{
 	JTable food=new JTable();
 	JPanel [] seat=new JPanel[16];
 	JLabel [] l_seat=new JLabel[16];
+	JLabel hour = new JLabel("00 시");
+	JLabel minute = new JLabel("00 분");
+	JLabel second = new JLabel("00 초");
 	
+	static int milliseconds = 550;
+	static int seconds = 0;
+	static int minutes = 0;
+	static int hours = 0;
+	static boolean state = true;
+	
+	String member="";
+	public String getMember() {
+		return member;
+	}
+
+
+	public void setMember(String member) {
+		this.member = member;
+	}
+
+
 	// 좌석 선언
-	
-	
 	public ShowSeat() {
 		setTitle("좌석 보여주기");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setLayout(null);
-		
-		System.out.println("Test");
+
 		// left 패널
 		left.setBackground(new Color(128,0,128));
 		left.setBounds(0, 0, 1350, 1000);
@@ -41,7 +65,7 @@ public class ShowSeat extends JFrame{
 		right.setBounds(0, 0, 2000,1000);
 		c.add(right);
 		right.setLayout(null);
-		
+
 		//음식 보여주는 table
 		DefaultTableModel model=new DefaultTableModel();
 		model.addColumn("자리");
@@ -83,7 +107,9 @@ public class ShowSeat extends JFrame{
 		int j=90;
 		for(int i=0;i<6;i++) {
 			seat[i]=new JPanel();
+			seat[i].setLayout(null);
 			l_seat[i]=new JLabel((i+1) + "번");
+			l_seat[i].setBounds(65,-30,100,100);
 			seat[i].setBounds(new Rectangle(j,130,160,180));
 			j+=170;
 			seat[i].setBackground(new Color(255,228,225));
@@ -96,7 +122,9 @@ public class ShowSeat extends JFrame{
 		int k=90;
 		for(int i=6;i<12;i++) {
 			seat[i]=new JPanel();
+			seat[i].setLayout(null);
 			l_seat[i]=new JLabel((i+1) + "번");
+			l_seat[i].setBounds(60,-30,100,100);
 			seat[i].setBounds(new Rectangle(k,500,160,180));
 			k+=170;
 			seat[i].setBackground(new Color(255,228,225));
@@ -109,7 +137,9 @@ public class ShowSeat extends JFrame{
 		int o=130;
 		for(int i=12;i<16;i++) {
 			seat[i]=new JPanel();
+			seat[i].setLayout(null);
 			l_seat[i]=new JLabel((i+1) + "번");
+			l_seat[i].setBounds(58,-30,100,100);
 			seat[i].setBounds(new Rectangle(1150,o,160,180));
 			o+=190;
 			seat[i].setBackground(new Color(255,228,225));
@@ -117,6 +147,80 @@ public class ShowSeat extends JFrame{
 			seat[i].add(l_seat[i]);
 			left.add(seat[i]);
 		}
+		
+		
+		// ------------------------타이머----------------------------
+		
+		
+//		hour.setBounds(20, 135, 60, 45);
+//		hour.setForeground(Color.BLACK);
+//		hour.setFont(new Font("굴림", Font.PLAIN, 15));
+//		minute.setBounds(60,135,60,45);
+//		minute.setForeground(Color.BLACK);
+//		minute.setFont(new Font("굴림", Font.PLAIN, 15));
+//		
+//		second.setBounds(100,135, 95, 46);
+//		second.setForeground(Color.BLACK);
+//		second.setFont(new Font("굴림", Font.PLAIN, 15));
+//		
+		
 		setVisible(true);	
+	}
+	
+	
+	public void getTimer() {
+//		seconds=Integer.parseInt(Tsecond.getText());
+//		minutes=Integer.parseInt(Tmin.getText());
+//		hours=Integer.parseInt(Thour.getText());
+		state = true;  //시작한다
+		
+		
+		Thread t = new Thread() {
+			public void run() {
+				while(state){
+					try {
+						sleep(1);
+						if(milliseconds<0) {
+							milliseconds=550;
+							seconds--;
+						}if(seconds<0) {
+							milliseconds=550;
+							seconds=60;
+							minutes--;
+						}if(minutes<0) {
+							milliseconds=550;
+							seconds=60;
+							minutes=60;
+							hours--;
+						}
+						if(hours<=0 && minutes<=0 && seconds<=0 && milliseconds<=0) {
+							milliseconds=0;
+							seconds=0;
+							minutes=0;
+							hours=0;
+							state=false;
+						}
+						milliseconds--;
+								
+						second.setText(seconds + "초");
+						minute.setText(minutes + "분");
+						hour.setText(hours + "시");
+					} catch(Exception e) {	}
+				    if(state==false) break;
+				}  // while 끝
+			}  // run() 끝
+		};// Thread 끝	
+		
+		t.start();
+	}
+
+	public void checkMember(String member) {
+		// TODO Auto-generated method stub
+		member=getMember();
+		if(member.equals("회원")) {
+			seat[0].setBackground(new Color(255,228,225));
+		}else {
+			seat[0].setBackground(new Color(245,130,113));
+		}
 	}
 }

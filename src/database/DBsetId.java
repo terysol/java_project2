@@ -1,15 +1,19 @@
-package Manager;
+package database;
 
-import java.sql.*;
-public class DBfood_list {
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+public class DBsetId {
 	Connection conn=null;
 	PreparedStatement pstmt=null;
 	ResultSet rs=null;
 	String jdbc_driver="com.mysql.cj.jdbc.Driver";
-	String dbURL="jdbc:mysql://127.0.0.1:3306/food_list?serverTimezone=UTC";
+	String dbURL="jdbc:mysql://127.0.0.1:3306/member2?serverTimezone=UTC";
 	String sql="SELECT * FROM emp";
 	
-	public DBfood_list() {
+	public DBsetId() {
 		connect();
 	}
 	void connect() {
