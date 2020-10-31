@@ -33,7 +33,7 @@ public class SignIn_Up {
 	
 	JButton B_member = new JButton("회원");//회원
 	JButton B_Nmember = new JButton("비회원");//비회원
-	ShowSeat s=new ShowSeat();
+	//ShowSeat s=new ShowSeat();
 
 	/**
 	 * Launch the application.
@@ -325,6 +325,7 @@ public class SignIn_Up {
 				Pmember.setVisible(true);
 				Pmain.setVisible(false);
 				
+				
 			}
 		});
 		
@@ -348,8 +349,8 @@ public class SignIn_Up {
 				// TODO Auto-generated method stub
 				PNmember.setVisible(true);
 				Pmain.setVisible(false);
-				s.setVisible(false);
-				s.setMember("비회원");
+				//s.setVisible(false);
+				//s.setMember("비회원");
 			}
 		});
 			

@@ -29,11 +29,11 @@ public class ShowSeat extends JFrame{
 	JLabel minute = new JLabel("00 분");
 	JLabel second = new JLabel("00 초");
 	
-	static int milliseconds = 550;
-	static int seconds = 0;
-	static int minutes = 0;
-	static int hours = 0;
-	static boolean state = true;
+	int milliseconds = 550;
+	int seconds = 0;
+    int minutes = 0;
+	int hours = 0;
+	boolean state = true;
 	
 	String member="";
 	public String getMember() {
@@ -44,10 +44,30 @@ public class ShowSeat extends JFrame{
 	public void setMember(String member) {
 		this.member = member;
 	}
-
+	
+	public void setTime(int hours) {
+		this.hours=hours;
+	}
 
 	// 좌석 선언
 	public ShowSeat() {
+		
+
+		//음식 보여주는 table
+		showTable();
+		
+		// 좌석가로 1
+	
+		
+		manageSeat();
+		
+		
+		
+		startTimer();
+		setVisible(true);	
+	}
+	
+	public void manageSeat() {
 		setTitle("좌석 보여주기");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -65,45 +85,8 @@ public class ShowSeat extends JFrame{
 		right.setBounds(0, 0, 2000,1000);
 		c.add(right);
 		right.setLayout(null);
-
-		//음식 보여주는 table
-		DefaultTableModel model=new DefaultTableModel();
-		model.addColumn("자리");
-		model.addColumn("음식");
-		model.addColumn("개수");
-		model.addColumn("메모");
-		food.setModel(new DefaultTableModel(
-				new Object[][] {
-				},
-				new String[] {
-					"자리","음식","개수","메모"
-				}
-			));
-		DBfood_list DB=new DBfood_list();
-		String sql="SELECT * FROM food1";
-		//String sql2="SELECT SEC_TO_TIME(sum(TIME_TO_SEC(time))) FROM test";
-		try {
-			DB.pstmt=DB.conn.prepareStatement(sql);
-			DB.rs=DB.pstmt.executeQuery();
-			//DB.rs=DB.stmt.executeQuery(sql2);
-			while(DB.rs.next()) {
-				model.addRow(new Object [] {
-						DB.rs.getString("Seat"),
-						DB.rs.getString("Food"),
-						DB.rs.getString("Num"),
-						DB.rs.getString("Memo")
-				});
-			}
-			food.setModel(model);
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-		food.setModel(model);
-		food.setModel(model);
-		food.setBounds(1375,10, 530, 291);
-		right.add(food);
 		
-		// 좌석가로 1
+		// 좌석 가로1
 		int j=90;
 		for(int i=0;i<6;i++) {
 			seat[i]=new JPanel();
@@ -148,30 +131,24 @@ public class ShowSeat extends JFrame{
 			left.add(seat[i]);
 		}
 		
-		
 		// ------------------------타이머----------------------------
 		
+		hour.setBounds(20, 135, 60, 45);
+		hour.setForeground(Color.BLACK);
+		hour.setFont(new Font("굴림", Font.PLAIN, 15));
+		minute.setBounds(60,135,60,45);
+		minute.setForeground(Color.BLACK);
+		minute.setFont(new Font("굴림", Font.PLAIN, 15));
 		
-//		hour.setBounds(20, 135, 60, 45);
-//		hour.setForeground(Color.BLACK);
-//		hour.setFont(new Font("굴림", Font.PLAIN, 15));
-//		minute.setBounds(60,135,60,45);
-//		minute.setForeground(Color.BLACK);
-//		minute.setFont(new Font("굴림", Font.PLAIN, 15));
-//		
-//		second.setBounds(100,135, 95, 46);
-//		second.setForeground(Color.BLACK);
-//		second.setFont(new Font("굴림", Font.PLAIN, 15));
-//		
+		second.setBounds(100,135, 95, 46);
+		second.setForeground(Color.BLACK);
+		second.setFont(new Font("굴림", Font.PLAIN, 15));
 		
-		setVisible(true);	
+		seat[0].add(hour);   seat[0].add(minute);  seat[0].add(second);
+		
 	}
 	
-	
-	public void getTimer() {
-//		seconds=Integer.parseInt(Tsecond.getText());
-//		minutes=Integer.parseInt(Tmin.getText());
-//		hours=Integer.parseInt(Thour.getText());
+	public void startTimer() {
 		state = true;  //시작한다
 		
 		
@@ -190,7 +167,7 @@ public class ShowSeat extends JFrame{
 						}if(minutes<0) {
 							milliseconds=550;
 							seconds=60;
-							minutes=60;
+							minutes=59;
 							hours--;
 						}
 						if(hours<=0 && minutes<=0 && seconds<=0 && milliseconds<=0) {
@@ -222,5 +199,45 @@ public class ShowSeat extends JFrame{
 		}else {
 			seat[0].setBackground(new Color(245,130,113));
 		}
+	}
+	public void showTable() {
+		DefaultTableModel model=new DefaultTableModel();
+		model.addColumn("자리");
+		model.addColumn("음식");
+		model.addColumn("개수");
+		model.addColumn("메모");
+		food.setModel(new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+					"자리","음식","개수","메모"
+				}
+			));
+		DBfood_list DB=new DBfood_list();
+		String sql="SELECT * FROM food1";
+		//String sql2="SELECT SEC_TO_TIME(sum(TIME_TO_SEC(time))) FROM test";
+		try {
+			DB.pstmt=DB.conn.prepareStatement(sql);
+			DB.rs=DB.pstmt.executeQuery();
+			//DB.rs=DB.stmt.executeQuery(sql2);
+			while(DB.rs.next()) {
+				model.addRow(new Object [] {
+						DB.rs.getString("Seat"),
+						DB.rs.getString("Food"),
+						DB.rs.getString("Num"),
+						DB.rs.getString("Memo")
+				});
+			}
+			food.setModel(model);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		food.setModel(model);
+		food.setModel(model);
+		food.setBounds(1375,10, 530, 291);
+		right.add(food);
+	}
+	public static void main(String[] args) {
+		new ShowSeat();
 	}
 }

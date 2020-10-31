@@ -9,7 +9,7 @@ public class DBmember {
 	PreparedStatement pstmt=null;
 	ResultSet rs=null;
 	String jdbc_driver="com.mysql.cj.jdbc.Driver";
-	String dbURL="jdbc:mysql://127.0.0.1:3306/joinMember2?serverTimezone=UTC";
+	String dbURL="jdbc:mysql://127.0.0.1:3306/member2?serverTimezone=UTC";
 	String sql="SELECT * FROM joinMember2";
 		
 	public DBmember() {

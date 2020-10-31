@@ -6,14 +6,14 @@ import java.sql.SQLException;
 import javax.swing.JTextField;
 
 //회원가입을 위한 db연동
-public class DBsignup {
+public class DBTime {
 	java.sql.Connection conn;
 	java.sql.Statement stmt;
 	java.sql.ResultSet rs;
 	PreparedStatement ps;
 	
 	
-	public DBsignup(){  //생성자
+	public DBTime(){  //생성자
 		connect();
 	}
 	//해당 드라이버의 클래스를 이용하여 DB접속(_conn)
@@ -54,14 +54,14 @@ public class DBsignup {
 			System.out.println("close error :" +e);
 		}
 	}
-	public static void createCustomer(String t_SName,String t_SId, String t_Password) {
+	public static void createCustomer(String t_time) {
 		try {
 			DBsignup ot=new DBsignup();
 			//DBsignup info=new DBsignup();
 			
-			ot.Undate("INSERT INTO members (name, id, password)" + "VALUES('" + t_SName + "','" + t_SId + "','" + t_Password + "','" +  "')");
+			ot.Undate("INSERT INTO members (time)" + "VALUES('" + t_time +  "')");
 			
-			ot.select("SELECT * FROM members");
+			ot.select("SELECT * FROM times");
 			ot.rs.beforeFirst();
 			
 		}//try
