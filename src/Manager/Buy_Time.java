@@ -22,6 +22,7 @@ public class Buy_Time {
 	JButton []seat = new JButton[16];
 	JLabel [] l_seat = new JLabel[16];
 	
+	
 
 	public Buy_Time() {
 		frame = new JFrame("ÁÂ¼®");
@@ -104,6 +105,7 @@ public class Buy_Time {
 	            public void actionPerformed(ActionEvent e) {
 	                Modal m = new Modal(frame);
 	                m.setVisible(true);
+	                
 	            }
 	            
 	        });
@@ -112,6 +114,8 @@ public class Buy_Time {
 		panel_1.setBounds(0, 0, 1600, 1000);
 		frame.getContentPane().add(panel_1);
 		frame.setVisible(true);
+		
+		
 		
 	}
 	public static void main(String[] args) {

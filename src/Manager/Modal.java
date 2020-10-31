@@ -9,17 +9,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import database.DBTime;
 import Manager.SignIn_Up;
 
-public class Modal extends JDialog {
+public class Modal extends JFrame {
 	Choice ch = new Choice();
 	int result;
+	ClientBackground client=new ClientBackground();
 	public Modal(Window parent) {
-		super(parent, "결재 창", ModalityType.APPLICATION_MODAL);
+		super("결재 창");
 		
 		setSize(600, 500);
 		setLayout(null);
@@ -71,7 +73,6 @@ public class Modal extends JDialog {
 						
 					DBTime.createCustomer(t_time);
 					JOptionPane.showMessageDialog(null, "카드결제 되었습니다.");
-					SignIn_Up.main(null);
 					setVisible(true);
 			}
 			
@@ -95,7 +96,7 @@ public class Modal extends JDialog {
 						
 					DBTime.createCustomer(t_time);
 					result=JOptionPane.showConfirmDialog(null, "현금으로 결제하시겠습니까?","Comfirm",JOptionPane.YES_NO_OPTION);
-					SignIn_Up.main(null);
+					
 					setVisible(true);
 			}
 			
@@ -103,7 +104,8 @@ public class Modal extends JDialog {
 		
 		
 		
-		
+		client.setGui(this);
+		client.connect();
 		add(time);
 		add(lb);
 		add(ch);

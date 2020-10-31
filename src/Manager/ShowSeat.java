@@ -66,6 +66,9 @@ public class ShowSeat extends JFrame{
 		startTimer();
 		setVisible(true);	
 	}
+	public void changeColor() {
+		seat[0].setBackground(new Color(10,250,90));
+	}
 	
 	public void manageSeat() {
 		setTitle("좌석 보여주기");
@@ -238,6 +241,9 @@ public class ShowSeat extends JFrame{
 		right.add(food);
 	}
 	public static void main(String[] args) {
-		new ShowSeat();
+		ShowSeat manage=new ShowSeat();
+		ServerBackground server=new ServerBackground();
+		server.setGui(manage);
+		server.setting();
 	}
 }

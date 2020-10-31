@@ -1,5 +1,27 @@
 package Manager;
 
-public class ClientBackground {
+import java.io.IOException;
+import java.net.Socket;
 
+public class ClientBackground {
+	Socket socket;
+	Modal gui;
+	
+	
+	public void setGui(Modal gui) {
+		this.gui = gui;
+	}
+	public void connect() {
+		try {
+			socket=new Socket("127.0.0.1",4152);
+			System.out.println("¼­¹ö¿¬°áµÊ.");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public static void main(String[] args) {
+		ClientBackground client =new ClientBackground();
+		client.connect();
+	}
 }
