@@ -54,7 +54,7 @@ public class Buy_Time {
 	            // 만들어진 버튼 "새 창 띄우기"에 버튼이 눌러지면 발생하는 행동을 정의
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
-	                Modal m = new Modal(frame);
+	                Modal m = new Modal();
 	                m.setVisible(true);
 	                
 	            }
@@ -79,7 +79,7 @@ public class Buy_Time {
 	            // 만들어진 버튼 "새 창 띄우기"에 버튼이 눌러지면 발생하는 행동을 정의
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
-	                Modal m = new Modal(frame);
+	                Modal m = new Modal();
 	                m.setVisible(true);
 	            }
 	            
@@ -103,7 +103,7 @@ public class Buy_Time {
 	            // 만들어진 버튼 "새 창 띄우기"에 버튼이 눌러지면 발생하는 행동을 정의
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
-	                Modal m = new Modal(frame);
+	                Modal m = new Modal();
 	                m.setVisible(true);
 	                
 	            }

@@ -33,6 +33,7 @@ public class SignIn_Up {
 	
 	JButton B_member = new JButton("회원");//회원
 	JButton B_Nmember = new JButton("비회원");//비회원
+	JLabel L_Id = new JLabel("아이디 : ");
 	//ShowSeat s=new ShowSeat();
 
 	/**
@@ -162,7 +163,7 @@ public class SignIn_Up {
 		L_Login.setFont(new Font("HY동녘M", Font.PLAIN, 50));
 		Pmember.add(L_Login);
 		
-		JLabel L_Id = new JLabel("아이디 : ");
+		
 		L_Id.setForeground(Color.WHITE);
 		L_Id.setBounds(527, 394, 132, 45);
 		L_Id.setFont(new Font("굴림", Font.BOLD, 30));
@@ -362,6 +363,15 @@ public class SignIn_Up {
 				// TODO Auto-generated method stub
 				Pmain.setVisible(true);
 				PNmember.setVisible(false);
+			}
+		});
+		B_Login.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+				
 			}
 		});
 		

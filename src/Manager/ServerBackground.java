@@ -17,6 +17,9 @@ public class ServerBackground {
 			System.out.println("¥Î±‚¡ﬂ...");
 			socket=serversocket.accept();
 			gui.changeColor();
+			gui.GetTime();
+			gui.startTimer();
+			
 			
 		}catch(Exception e) {
 			e.printStackTrace();

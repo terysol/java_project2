@@ -45,9 +45,7 @@ public class ShowSeat extends JFrame{
 		this.member = member;
 	}
 	
-	public void setTime(int hours) {
-		this.hours=hours;
-	}
+
 
 	// 좌석 선언
 	public ShowSeat() {
@@ -203,6 +201,17 @@ public class ShowSeat extends JFrame{
 			seat[0].setBackground(new Color(245,130,113));
 		}
 	}
+	
+	public void GetTime() {
+		int num=Modal.ch.getSelectedIndex();
+		switch(num) {
+		case 0 : this.hours=1; break;
+		case 1 : this.hours=2; break;
+		case 2 : this.hours=3; break;
+		case 3 : this.hours=4; break;
+		case 4 : this.hours=5; break;
+		}
+	}
 	public void showTable() {
 		DefaultTableModel model=new DefaultTableModel();
 		model.addColumn("자리");
@@ -245,5 +254,10 @@ public class ShowSeat extends JFrame{
 		ServerBackground server=new ServerBackground();
 		server.setGui(manage);
 		server.setting();
+	}
+
+
+	public void setHours(int hours2) {
+		this.hours=hours2;
 	}
 }

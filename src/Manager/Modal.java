@@ -1,14 +1,14 @@
 package Manager;
 
-import java.awt.Button;
-import java.awt.Choice;
-import java.awt.Dialog.ModalityType;
+
 import java.awt.Font;
-import java.awt.Window;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JDialog;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -17,55 +17,58 @@ import database.DBTime;
 import Manager.SignIn_Up;
 
 public class Modal extends JFrame {
-	Choice ch = new Choice();
+	static JComboBox<String> ch=new JComboBox<String>();
 	int result;
 	ClientBackground client=new ClientBackground();
-	public Modal(Window parent) {
+	
+	public Modal() {
 		super("결재 창");
 		
-		setSize(600, 500);
+		setSize(400, 480);
 		setLayout(null);
+		setLocation(300,300);
 		
 		JLabel time = new JLabel("-------------시간-------------");
 		time.setFont(new Font("HY동녘M", Font.PLAIN, 25));
-		time.setSize(6000, 50);
-		time.setLocation(0, 0);
+		time.setLocation(100, 100);
+		time.setBounds(66,10,1000,50);
 		
 		JLabel lb = new JLabel("원하는 시간대를 선택하세요.");
 		lb.setFont(new Font("Hachoma", Font.PLAIN, 20));
-		lb.setSize(300, 50);
 		lb.setLocation(180,80);
+		lb.setBounds(66,60,300,50);
 		
 		ch.addItem("1시간    1000천원");
 		ch.addItem("2시간    2000천원");
 		ch.addItem("3시간    3000천원");
 		ch.addItem("4시간    4000천원");
 		ch.addItem("5시간    5000천원");
-		ch.setSize(100, 50);
-		ch.setLocation(250,150);
-		
+		ch.setBounds(130,130,130,40);
+	
 		//getTime();
 		JLabel payment = new JLabel("-------------결제-------------");
 		payment.setFont(new Font("HY동녘M", Font.PLAIN, 25));
-		payment.setSize(6000, 50);
 		payment.setLocation(0, 200);
+		payment.setBounds(66,200,1000,50);
 		
 		JLabel way = new JLabel("결제 방법을 선택해주세요.");
 		way.setFont(new Font("Hachoma", Font.PLAIN, 20));
-		way.setSize(300, 50);
 		way.setLocation(180,260);
+		way.setBounds(66,250,300,50);
 		
-		Button card = new Button("카드");
+		JButton card = new JButton("카드");
 		card.setFont(new Font("굴림", Font.PLAIN, 20));
-		card.setBounds(160, 350, 80, 40);
+		card.setBounds(55, 320, 80, 40);
 		
+		client.setGui(this);
 		card.addActionListener(new ActionListener() {
-			
+		
+		
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				DBTime time = new DBTime();
 				
-					String t_time=ch.getSelectedItem();
+					String t_time=ch.getSelectedItem().toString();
 						
 					String DBConnection = "INSERT members VALUES("+ t_time + "')";
 					
@@ -73,14 +76,15 @@ public class Modal extends JFrame {
 						
 					DBTime.createCustomer(t_time);
 					JOptionPane.showMessageDialog(null, "카드결제 되었습니다.");
+					client.connect();
 					setVisible(true);
 			}
 			
 			});
 		
-		Button cash = new Button("현금");
+		JButton cash = new JButton("현금");
 		cash.setFont(new Font("굴림", Font.PLAIN, 20));
-		cash.setBounds(350, 350, 80, 40);
+		cash.setBounds(240, 320, 80, 40);
 		
 		cash.addActionListener(new ActionListener() {
 			
@@ -88,7 +92,7 @@ public class Modal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				DBTime time = new DBTime();
 				
-					String t_time=ch.getSelectedItem();
+					String t_time=ch.getSelectedItem().toString();
 						
 					String DBConnection = "INSERT members VALUES("+ t_time + "')";
 					
@@ -96,7 +100,7 @@ public class Modal extends JFrame {
 						
 					DBTime.createCustomer(t_time);
 					result=JOptionPane.showConfirmDialog(null, "현금으로 결제하시겠습니까?","Comfirm",JOptionPane.YES_NO_OPTION);
-					
+					client.connect();
 					setVisible(true);
 			}
 			
@@ -104,8 +108,8 @@ public class Modal extends JFrame {
 		
 		
 		
-		client.setGui(this);
-		client.connect();
+		
+		
 		add(time);
 		add(lb);
 		add(ch);
@@ -114,18 +118,5 @@ public class Modal extends JFrame {
 		add(card);
 		add(cash);
 	}
-	public void getAnswer() {
-		
-	}
-	public void getTime() {
-		ShowSeat s=new ShowSeat();
-		int tm=ch.getSelectedIndex();
-		switch(tm) {
-		case 0: s.setTime(1);  break;
-		case 1: s.setTime(2);  break;
-		case 2: s.setTime(3);  break;
-		case 3: s.setTime(4);  break;
-		case 4: s.setTime(5);  break;
-		}
-	}
+	
 }
