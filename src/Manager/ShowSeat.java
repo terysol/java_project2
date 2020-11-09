@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.Socket;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -36,17 +38,9 @@ public class ShowSeat extends JFrame{
 	boolean state = true;
 	
 	String member="";
-	public String getMember() {
-		return member;
-	}
+	Modal m=new Modal();
 
-
-	public void setMember(String member) {
-		this.member = member;
-	}
 	
-
-
 	// 좌석 선언
 	public ShowSeat() {
 		
@@ -55,19 +49,12 @@ public class ShowSeat extends JFrame{
 		showTable();
 		
 		// 좌석가로 1
-	
-		
 		manageSeat();
-		
-		
-		
-		startTimer();
 		setVisible(true);	
 	}
 	public void changeColor() {
 		seat[0].setBackground(new Color(10,250,90));
 	}
-	
 	public void manageSeat() {
 		setTitle("좌석 보여주기");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -151,8 +138,6 @@ public class ShowSeat extends JFrame{
 	
 	public void startTimer() {
 		state = true;  //시작한다
-		
-		
 		Thread t = new Thread() {
 			public void run() {
 				while(state){
@@ -188,30 +173,10 @@ public class ShowSeat extends JFrame{
 				}  // while 끝
 			}  // run() 끝
 		};// Thread 끝	
-		
 		t.start();
 	}
 
-	public void checkMember(String member) {
-		// TODO Auto-generated method stub
-		member=getMember();
-		if(member.equals("회원")) {
-			seat[0].setBackground(new Color(255,228,225));
-		}else {
-			seat[0].setBackground(new Color(245,130,113));
-		}
-	}
-	
-	public void GetTime() {
-		int num=Modal.ch.getSelectedIndex();
-		switch(num) {
-		case 0 : this.hours=1; break;
-		case 1 : this.hours=2; break;
-		case 2 : this.hours=3; break;
-		case 3 : this.hours=4; break;
-		case 4 : this.hours=5; break;
-		}
-	}
+
 	public void showTable() {
 		DefaultTableModel model=new DefaultTableModel();
 		model.addColumn("자리");
@@ -250,14 +215,16 @@ public class ShowSeat extends JFrame{
 		right.add(food);
 	}
 	public static void main(String[] args) {
-		ShowSeat manage=new ShowSeat();
-		ServerBackground server=new ServerBackground();
-		server.setGui(manage);
-		server.setting();
-	}
-
-
-	public void setHours(int hours2) {
-		this.hours=hours2;
+		new ShowSeat();
+		Socket socket;
+		try {
+			socket = new Socket("127.0.0.1",7777);
+			System.out.println("연결 성공");
+			socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }

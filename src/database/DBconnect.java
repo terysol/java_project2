@@ -8,7 +8,7 @@ public class DBconnect {
 		Statement stmt=null;
 		try {
 			Class.forName(jdbc_driver);
-			String dbURL="jdbc:mysql://127.0.0.1:3306/scott2?serverTimezone=UTC";
+			String dbURL="jdbc:mysql://127.0.0.1:3306/pc_room?serverTimezone=UTC";
 			conn=DriverManager.getConnection(dbURL,"root","mirim2");
 			System.out.println("연결 성공");
 		}catch(ClassNotFoundException e) {

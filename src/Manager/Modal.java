@@ -14,13 +14,23 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import database.DBTime;
+import database.DBsaveTime;
 import Manager.SignIn_Up;
 
 public class Modal extends JFrame {
 	static JComboBox<String> ch=new JComboBox<String>();
 	int result;
 	ClientBackground client=new ClientBackground();
+	int t=0;
 	
+	
+	
+	public int getT() {
+		return t;
+	}
+
+
+
 	public Modal() {
 		super("결재 창");
 		
@@ -60,24 +70,29 @@ public class Modal extends JFrame {
 		card.setFont(new Font("굴림", Font.PLAIN, 20));
 		card.setBounds(55, 320, 80, 40);
 		
+		
 		client.setGui(this);
-		card.addActionListener(new ActionListener() {
 		
-		
+		ch.addActionListener(new ActionListener() {
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				DBTime time = new DBTime();
+				// TODO Auto-generated method stub
+				t=(ch.getSelectedIndex()+1);
+				System.out.println(t);
 				
-					String t_time=ch.getSelectedItem().toString();
+			}
+		});
+		
+		card.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				t=setTime();
 						
-					String DBConnection = "INSERT members VALUES("+ t_time + "')";
-					
-			
-						
-					DBTime.createCustomer(t_time);
-					JOptionPane.showMessageDialog(null, "카드결제 되었습니다.");
-					client.connect();
-					setVisible(true);
+				DBsaveTime.createCustomer(t);
+				JOptionPane.showMessageDialog(null, "카드결제 되었습니다.");
+				client.connect();
+				setVisible(true);
 			}
 			
 			});
@@ -90,26 +105,16 @@ public class Modal extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				DBTime time = new DBTime();
 				
-					String t_time=ch.getSelectedItem().toString();
-						
-					String DBConnection = "INSERT members VALUES("+ t_time + "')";
-					
-			
-						
-					DBTime.createCustomer(t_time);
+					t=setTime();
+					System.out.println(t);
+					DBsaveTime.createCustomer(t);
 					result=JOptionPane.showConfirmDialog(null, "현금으로 결제하시겠습니까?","Comfirm",JOptionPane.YES_NO_OPTION);
 					client.connect();
 					setVisible(true);
 			}
 			
 			});
-		
-		
-		
-		
-		
 		add(time);
 		add(lb);
 		add(ch);
@@ -118,5 +123,15 @@ public class Modal extends JFrame {
 		add(card);
 		add(cash);
 	}
-	
+	public int setTime() {
+		t=ch.getSelectedIndex();
+		switch(t) {
+		case 0: t=1; break;
+		case 1: t=2; break;
+		case 2: t=3; break;
+		case 3: t=4; break;
+		case 4: t=5; break;
+		}
+		return t;
+	}
 }

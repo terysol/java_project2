@@ -7,6 +7,7 @@ public class ServerBackground {
 	ServerSocket serversocket;
 	Socket socket;
 	ShowSeat gui;
+	int hours;
 	
 	public void setGui(ShowSeat gui) {
 		this.gui = gui;
@@ -16,9 +17,16 @@ public class ServerBackground {
 			serversocket =new ServerSocket(4152);
 			System.out.println("¥Î±‚¡ﬂ...");
 			socket=serversocket.accept();
+			
 			gui.changeColor();
-			gui.GetTime();
+//			int num=Modal.ch.getSelectedIndex();
+//			gui.setHours(num+1);
+			//System.out.println(Modal.t);
+			//System.out.println(ShowSeat.hours);
+			//System.out.println(ShowSeat.hours);
+			
 			gui.startTimer();
+			
 			
 			
 		}catch(Exception e) {
@@ -29,4 +37,8 @@ public class ServerBackground {
 		ServerBackground server=new ServerBackground();
 		server.setting();
 	}
+//	public void getTime(int hours) {
+//		this.hours=hours;
+//	}
+	
 }

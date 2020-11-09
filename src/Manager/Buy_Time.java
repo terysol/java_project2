@@ -15,7 +15,7 @@ import javax.swing.SwingConstants;
 
 import database.DBsignup;
 
-public class Buy_Time {
+public class Buy_Time implements ActionListener{
 
 	private JFrame frame;
 	private final JPanel panel = new JPanel();
@@ -120,6 +120,11 @@ public class Buy_Time {
 	}
 	public static void main(String[] args) {
 		new Buy_Time();
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
 
