@@ -5,12 +5,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class DBmember {
+public class DBsave {
 	Connection conn=null;
 	PreparedStatement pstmt=null;
 	ResultSet rs;
 	
-	public DBmember(String member, String id, String password, String name) {
+	public DBsave(int seatNum,int time,int useable) {
 		String dbinfor="jdbc:mysql://127.0.0.1:3306/pc_room?serverTimezone=UTC";
 		String dbID="root";
 		String dbPW="mirim2";
@@ -19,12 +19,12 @@ public class DBmember {
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		conn=DriverManager.getConnection(dbinfor,dbID,dbPW);
 		
-		String sql="INSERT INTO User (member,id,password,name) VALUES (?,?,?,?)";
+		String sql="UPDATE seat SET time = ?, useable = ? WHERE num =?";
 		pstmt=conn.prepareStatement(sql);
-		pstmt.setString(1, member);
-		pstmt.setString(2, id);
-		pstmt.setString(3, password);
-		pstmt.setString(4, name);
+		pstmt.setInt(1, time);
+		pstmt.setInt(2,useable);
+		pstmt.setInt(3, seatNum);
+		
 		pstmt.executeUpdate();
 		
 		conn.close();

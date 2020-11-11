@@ -5,6 +5,9 @@ import java.awt.Font;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.Socket;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -13,8 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import database.DBTime;
-import database.DBsaveTime;
+import database.DBsave;
 import Manager.SignIn_Up;
 
 public class Modal extends JFrame {
@@ -31,7 +33,7 @@ public class Modal extends JFrame {
 
 
 
-	public Modal() {
+	public Modal(int seatNum) {
 		super("결재 창");
 		
 		setSize(400, 480);
@@ -71,7 +73,7 @@ public class Modal extends JFrame {
 		card.setBounds(55, 320, 80, 40);
 		
 		
-		client.setGui(this);
+		System.out.println(seatNum);
 		
 		ch.addActionListener(new ActionListener() {
 			
@@ -84,15 +86,17 @@ public class Modal extends JFrame {
 			}
 		});
 		
+		String sql="select num from seat";
+		
+		
 		card.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				t=setTime();
-						
-				DBsaveTime.createCustomer(t);
 				JOptionPane.showMessageDialog(null, "카드결제 되었습니다.");
-				client.connect();
-				setVisible(true);
+				DBsave db=new DBsave(seatNum+1, t, 1);
+				
+				setVisible(false);
 			}
 			
 			});
@@ -107,11 +111,9 @@ public class Modal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 					t=setTime();
-					System.out.println(t);
-					DBsaveTime.createCustomer(t);
 					result=JOptionPane.showConfirmDialog(null, "현금으로 결제하시겠습니까?","Comfirm",JOptionPane.YES_NO_OPTION);
-					client.connect();
-					setVisible(true);
+					DBsave db=new DBsave(seatNum+1, t, 1);
+					setVisible(false);
 			}
 			
 			});

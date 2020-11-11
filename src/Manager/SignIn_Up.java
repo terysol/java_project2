@@ -19,6 +19,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import Manager.ShowSeat;
+import database.DBnotmember;
+import database.DBmember;
 
 
 public class SignIn_Up {
@@ -365,13 +367,27 @@ public class SignIn_Up {
 				PNmember.setVisible(false);
 			}
 		});
+		B_NLogin.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String cardNum=T_NCardnumber.getText();
+				DBnotmember db=new DBnotmember("비회원", cardNum);
+				Buy_Time b=new Buy_Time();
+				frame.setVisible(false);
+			}
+		});
+		
 		B_Login.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
-				
+				JOptionPane.showMessageDialog(null, "로그인 되었습니다.");	
+				Buy_Time b=new Buy_Time();
+				frame.setVisible(false);
+								
 			}
 		});
 		
@@ -410,17 +426,14 @@ public class SignIn_Up {
 		//Hashtable loginUsers = new Hashtable();
 		String t_SName=T_SName.getText();
 		String t_SId=T_SId.getText();
-		char[] t_Password=PF_SPassword.getPassword();
+		String t_Password=PF_SPassword.getPassword().toString();
 			
-		String DBConnection = "INSERT members2 VALUES("+ t_SName + 
-				", '" + t_SId + "'," + t_Password + "')";
-
+		DBmember db=new DBmember("회원", t_SId, t_Password, t_SName);
 			
 		//DBsignup.createCustomer(t_SName, t_SId, t_Password);
 		JOptionPane.showMessageDialog(null, "회원가입 되었습니다. 로그인 해주세요.");
-		SignIn_Up s1=new SignIn_Up();
-		SignIn_Up.main(null);
-		frame.setVisible(true);
+		Pmember.setVisible(true);
+		Psignup.setVisible(false);
 			
 		}
 	});	

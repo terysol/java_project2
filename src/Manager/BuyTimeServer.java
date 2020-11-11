@@ -2,19 +2,13 @@ package Manager;
 
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
-public class ManagerServer {
-	
-	public static void main(String[] args) throws SQLException {
+public class BuyTimeServer {
+	public static void main(String[] args) {
 		ServerSocket serversocket=null;
 		Socket socket=null;
 		try {
-			serversocket=new ServerSocket(7779);
+			serversocket=new ServerSocket(7778);
 			System.out.println("연결대기 중...");
 			socket=new Socket();
 			socket=serversocket.accept();
@@ -25,5 +19,3 @@ public class ManagerServer {
 		}
 	}
 }
-
-

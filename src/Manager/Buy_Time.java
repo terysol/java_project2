@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.Socket;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,7 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import database.DBsignup;
+import database.DBmember;
 
 public class Buy_Time implements ActionListener{
 
@@ -21,7 +23,6 @@ public class Buy_Time implements ActionListener{
 	private final JPanel panel = new JPanel();
 	JButton []seat = new JButton[16];
 	JLabel [] l_seat = new JLabel[16];
-	
 	
 
 	public Buy_Time() {
@@ -49,21 +50,13 @@ public class Buy_Time implements ActionListener{
 			l_seat[i].setFont(new Font("굴림", Font.BOLD, 20));
 			seat[i].add(l_seat[i]);
 			panel.add(seat[i]);
+			seat[i].addActionListener(this);
 			
-			seat[i].addActionListener(new ActionListener() {
-	            // 만들어진 버튼 "새 창 띄우기"에 버튼이 눌러지면 발생하는 행동을 정의
-	            @Override
-	            public void actionPerformed(ActionEvent e) {
-	                Modal m = new Modal();
-	                m.setVisible(true);
-	                
-	            }
-	            
-	        });
 		}
 		
+		
 		int k = 90;
-		for(int i = 6; i<12; i++) {
+		for( int i = 6; i<12; i++) {
 			seat[i] = new JButton();
 			seat[i].setLayout(null);
 			l_seat[i] = new JLabel((i+1) + "번");
@@ -74,17 +67,10 @@ public class Buy_Time implements ActionListener{
 			l_seat[i].setFont(new Font("굴림", Font.BOLD, 20));
 			seat[i].add(l_seat[i]);
 			panel.add(seat[i]);
+			seat[i].addActionListener(this);
 			
-			seat[i].addActionListener(new ActionListener() {
-	            // 만들어진 버튼 "새 창 띄우기"에 버튼이 눌러지면 발생하는 행동을 정의
-	            @Override
-	            public void actionPerformed(ActionEvent e) {
-	                Modal m = new Modal();
-	                m.setVisible(true);
-	            }
-	            
-	        });
 		}
+		
 		
 		int o = 130;
 		for(int i = 12; i<16; i++) {
@@ -98,18 +84,10 @@ public class Buy_Time implements ActionListener{
 			l_seat[i].setFont(new Font("굴림", Font.BOLD, 20));
 			seat[i].add(l_seat[i]);
 			panel.add(seat[i]);
+			seat[i].addActionListener(this);
 			
-			seat[i].addActionListener(new ActionListener() {
-	            // 만들어진 버튼 "새 창 띄우기"에 버튼이 눌러지면 발생하는 행동을 정의
-	            @Override
-	            public void actionPerformed(ActionEvent e) {
-	                Modal m = new Modal();
-	                m.setVisible(true);
-	                
-	            }
-	            
-	        });
-		}			
+		}		
+		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(0, 0, 1600, 1000);
 		frame.getContentPane().add(panel_1);
@@ -120,11 +98,31 @@ public class Buy_Time implements ActionListener{
 	}
 	public static void main(String[] args) {
 		new Buy_Time();
+		Socket socket=null;
+		try {
+			socket=new Socket("127.0.0.1",7778);
+			System.out.println("연결성공");
+			socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		for(int i=0;i<seat.length;i++) {
+			if(e.getSource()==seat[i]) {
+				Modal m =new Modal(i);
+				m.setVisible(true);
+				seat[i].setEnabled(false);
+				//System.out.println(i);
+				break;
+				
+			}
+		}
 		
+		//m.setVisible(true);
 	}
 }
 
