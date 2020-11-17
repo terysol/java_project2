@@ -18,14 +18,14 @@ public class ServerBackground {
 			System.out.println("¥Î±‚¡ﬂ...");
 			socket=serversocket.accept();
 			
-			gui.changeColor();
+			//gui.changeColor();
 //			int num=Modal.ch.getSelectedIndex();
 //			gui.setHours(num+1);
 			//System.out.println(Modal.t);
 			//System.out.println(ShowSeat.hours);
 			//System.out.println(ShowSeat.hours);
 			
-			gui.startTimer();
+			//gui.startTimer();
 			
 			
 			

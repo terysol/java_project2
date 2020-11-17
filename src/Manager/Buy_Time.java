@@ -7,6 +7,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.Socket;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,8 +20,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import database.DBmember;
-
 public class Buy_Time implements ActionListener{
 
 	private JFrame frame;
@@ -24,8 +27,10 @@ public class Buy_Time implements ActionListener{
 	JButton []seat = new JButton[16];
 	JLabel [] l_seat = new JLabel[16];
 	
+	
 
 	public Buy_Time() {
+		
 		frame = new JFrame("좌석");
 		frame.setBounds(100, 100, 1600, 1000);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -93,29 +98,63 @@ public class Buy_Time implements ActionListener{
 		frame.getContentPane().add(panel_1);
 		frame.setVisible(true);
 		
+		JButton food = new JButton("음식");
+		food.setFont(new Font("굴림", Font.BOLD, 40));
+		food.setBounds(0, 0, 228, 73);
+		panel.add(food);
 		
 		
+		
+
+	}
+	public void change() {
+		String dbURL="jdbc:mysql://127.0.0.1:3306/pc_room?serverTimezone=UTC";
+		String jdbc_driver="com.mysql.cj.jdbc.Driver";
+		Connection conn=null;
+		PreparedStatement pstmt = null;
+		ResultSet rs;
+		int seatNum;
+		try {
+			Class.forName(jdbc_driver);
+			System.out.println("Mysql client 데이터 베이스 연결 대기중...");
+			conn=DriverManager.getConnection(dbURL,"root","mirim2");
+			String sql="select num from seat WHERE useable=1";
+			pstmt=conn.prepareStatement(sql);
+			rs=pstmt.executeQuery(sql);
+			System.out.println("성공");
+			while(rs.next()) {
+				seatNum=rs.getInt("num");
+				//System.out.println(seatNum);
+				seat[seatNum-1].setEnabled(false);
+				seat[seatNum-1].setText("사용중");
+				seat[seatNum-1].setBackground(Color.LIGHT_GRAY);
+			}
+			
+		}catch(ClassNotFoundException e1) {
+			e1.printStackTrace();
+		}catch(SQLException e2) {
+			e2.printStackTrace();
+		}
 	}
 	public static void main(String[] args) {
-		new Buy_Time();
-		Socket socket=null;
-		try {
-			socket=new Socket("127.0.0.1",7778);
-			System.out.println("연결성공");
-			socket.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Buy_Time b=new Buy_Time();
+		Client client=new Client();
+		client.setGui(b);
+		b.change();
+//		client.setGui(b);
+//		client.connect();
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		
 		for(int i=0;i<seat.length;i++) {
 			if(e.getSource()==seat[i]) {
 				Modal m =new Modal(i);
 				m.setVisible(true);
 				seat[i].setEnabled(false);
+				seat[i].setText("사용중");
+				seat[i].setBackground(Color.LIGHT_GRAY);
 				//System.out.println(i);
 				break;
 				

@@ -17,21 +17,13 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import database.DBsave;
-import Manager.SignIn_Up;
+
 
 public class Modal extends JFrame {
 	static JComboBox<String> ch=new JComboBox<String>();
 	int result;
-	ClientBackground client=new ClientBackground();
 	int t=0;
-	
-	
-	
-	public int getT() {
-		return t;
-	}
-
-
+	Client client=new Client();
 
 	public Modal(int seatNum) {
 		super("결재 창");
@@ -75,6 +67,7 @@ public class Modal extends JFrame {
 		
 		System.out.println(seatNum);
 		
+		
 		ch.addActionListener(new ActionListener() {
 			
 			@Override
@@ -86,8 +79,6 @@ public class Modal extends JFrame {
 			}
 		});
 		
-		String sql="select num from seat";
-		
 		
 		card.addActionListener(new ActionListener() {
 			@Override
@@ -95,7 +86,7 @@ public class Modal extends JFrame {
 				t=setTime();
 				JOptionPane.showMessageDialog(null, "카드결제 되었습니다.");
 				DBsave db=new DBsave(seatNum+1, t, 1);
-				
+				client.connect();
 				setVisible(false);
 			}
 			
@@ -113,6 +104,7 @@ public class Modal extends JFrame {
 					t=setTime();
 					result=JOptionPane.showConfirmDialog(null, "현금으로 결제하시겠습니까?","Comfirm",JOptionPane.YES_NO_OPTION);
 					DBsave db=new DBsave(seatNum+1, t, 1);
+					client.connect();
 					setVisible(false);
 			}
 			

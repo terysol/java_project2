@@ -4,8 +4,11 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 //import java.util.Hashtable;
@@ -18,6 +21,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import org.omg.CORBA.portable.OutputStream;
+
 import Manager.ShowSeat;
 import database.DBnotmember;
 import database.DBmember;
@@ -25,74 +30,21 @@ import database.DBmember;
 
 public class SignIn_Up {
 
-	private JFrame frame;
-	private JTextField T_Id;
-	private JTextField T_Password;
-	private JTextField T_NCardnumber;
-	private JTextField T_SId;
-	private JPasswordField PF_SPassword;
-	private JTextField T_SName;
+	 JFrame frame;
+	 JTextField T_Id;
+	 JTextField T_Password;
+	 JTextField T_NCardnumber;
+	 JTextField T_SId;
+	 JPasswordField PF_SPassword;
+	 JTextField T_SName;
 	
 	JButton B_member = new JButton("회원");//회원
 	JButton B_Nmember = new JButton("비회원");//비회원
 	JLabel L_Id = new JLabel("아이디 : ");
-	//ShowSeat s=new ShowSeat();
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {	
-		String jdbc_driver="com.mysql.cj.jdbc.Driver";
-		Connection conn=null;
-		Statement stmt=null;
-		try {
-			Class.forName(jdbc_driver);
-			String dbURL="jdbc:mysql://127.0.0.1:3306/member2?serverTimezone=UTC";
-					
-			//해당 드라이버의 클래스를 이용하여 DB접속
-			conn=DriverManager.getConnection(dbURL,"root","mirim2");
-					
-			//DB에 명령어를 전달하는 객체를 생성
-			stmt = conn.createStatement();
-					
-			//스트림단위로 문자열을 읽어들이는 클래스
-			java.io.InputStreamReader isr = new java.io.InputStreamReader(System.in);
-			java.io.BufferedReader in = new java.io.BufferedReader(isr);
-					
-			System.out.println("연결 성공");
-					
-				
-				}catch(ClassNotFoundException e) {
-					System.out.println("드라이버 로딩 실패");
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					SignIn_Up window = new SignIn_Up();
-					window.frame.setVisible(true);
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
-	 */
+	
+	String member="";
+	
 	public SignIn_Up() {
-		initialize();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
 		frame = new JFrame();
 		frame.setTitle("메인화면");
 		frame.setBounds(100, 100, 1400, 1000);
@@ -311,6 +263,8 @@ public class SignIn_Up {
 		B_SignUp.setFont(new Font("굴림", Font.BOLD, 40));
 		B_SignUp.setBounds(595, 704, 228, 73);
 		Pmain.add(B_SignUp);
+		frame.add(Pmain);
+		frame.setVisible(true);
 		
 		
 		
@@ -373,8 +327,10 @@ public class SignIn_Up {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				String cardNum=T_NCardnumber.getText();
-				DBnotmember db=new DBnotmember("비회원", cardNum);
+				member="비회원";
+				DBnotmember db=new DBnotmember(member, cardNum);
 				Buy_Time b=new Buy_Time();
+				b.change();
 				frame.setVisible(false);
 			}
 		});
@@ -386,6 +342,7 @@ public class SignIn_Up {
 				// TODO Auto-generated method stub
 				JOptionPane.showMessageDialog(null, "로그인 되었습니다.");	
 				Buy_Time b=new Buy_Time();
+				b.change();
 				frame.setVisible(false);
 								
 			}
@@ -411,13 +368,7 @@ public class SignIn_Up {
 				Pmain.setVisible(true);
 				Psignup.setVisible(false);
 			}
-		});
-		
-
-		
-		
-
-		
+		});	
 		
 	B_signup.addActionListener(new ActionListener() {
 	
@@ -428,7 +379,8 @@ public class SignIn_Up {
 		String t_SId=T_SId.getText();
 		String t_Password=PF_SPassword.getPassword().toString();
 			
-		DBmember db=new DBmember("회원", t_SId, t_Password, t_SName);
+		member="회원";
+		DBmember db=new DBmember(member, t_SId, t_Password, t_SName);
 			
 		//DBsignup.createCustomer(t_SName, t_SId, t_Password);
 		JOptionPane.showMessageDialog(null, "회원가입 되었습니다. 로그인 해주세요.");
@@ -438,5 +390,17 @@ public class SignIn_Up {
 		}
 	});	
 	}
+	public static void main(String[] args) {
+		SignIn_Up s=new SignIn_Up();
+		Socket socket=null;
+		try {
+			socket=new Socket("127.0.0.1",7778);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
 }
 

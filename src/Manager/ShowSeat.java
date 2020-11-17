@@ -27,6 +27,7 @@ import javax.swing.table.DefaultTableModel;
 
 import database.DBfood_list;
 
+
 public class ShowSeat extends JFrame{
 	JPanel left=new JPanel();
 	JPanel right= new JPanel();
@@ -37,6 +38,16 @@ public class ShowSeat extends JFrame{
 	JLabel []hour = new JLabel[16];
 	JLabel []minute = new JLabel[16];
 	JLabel[] second = new JLabel[16];
+	JLabel [] use=new JLabel[16];
+	JLabel []foodName=new JLabel[16];
+	
+	ServerBackground server=new ServerBackground();
+	
+	String dbURL="jdbc:mysql://127.0.0.1:3306/pc_room?serverTimezone=UTC";
+	String jdbc_driver="com.mysql.cj.jdbc.Driver";
+	Connection conn=null;
+	PreparedStatement pstmt = null;
+	ResultSet rs;
 	
 	int milliseconds = 550;
 	int seconds = 0;
@@ -61,6 +72,7 @@ public class ShowSeat extends JFrame{
 	}
 	public void changeColor() {
 		seat[seatNum-1].setBackground(new Color(10,250,90));
+		use[seatNum-1].setText("사용중");
 	}
 	public void manageSeat() {
 		setTitle("좌석 보여주기");
@@ -85,14 +97,18 @@ public class ShowSeat extends JFrame{
 		int j=90;
 		for(int i=0;i<6;i++) {
 			seat[i]=new JPanel();
+			use[i]=new JLabel("비어있음");
 			seat[i].setLayout(null);
 			l_seat[i]=new JLabel((i+1) + "번");
 			l_seat[i].setBounds(65,-30,100,100);
+			use[i].setBounds(50, 60, 70, 30);
+			use[i].setFont(new Font("굴림",Font.BOLD,15));
 			seat[i].setBounds(new Rectangle(j,130,160,180));
 			j+=170;
 			seat[i].setBackground(new Color(255,228,225));
 			l_seat[i].setFont(new Font("굴림",Font.BOLD,20));
 			seat[i].add(l_seat[i]);
+			seat[i].add(use[i]);
 			left.add(seat[i]);
 		}
 		
@@ -100,15 +116,19 @@ public class ShowSeat extends JFrame{
 		int k=90;
 		for(int i=6;i<12;i++) {
 			seat[i]=new JPanel();
+			use[i]=new JLabel("비어있음");
 			seat[i].setLayout(null);
 			l_seat[i]=new JLabel((i+1) + "번");
 			l_seat[i].setBounds(60,-30,100,100);
+			use[i].setBounds(50, 60, 70, 30);
+			use[i].setFont(new Font("굴림",Font.BOLD,15));
 			seat[i].setBounds(new Rectangle(k,500,160,180));
 			k+=170;
 			seat[i].setBackground(new Color(255,228,225));
-			
+
 			l_seat[i].setFont(new Font("굴림",Font.BOLD,20));
 			seat[i].add(l_seat[i]);
+			seat[i].add(use[i]);
 			left.add(seat[i]);
 		}
 		
@@ -116,16 +136,21 @@ public class ShowSeat extends JFrame{
 		int o=130;
 		for(int i=12;i<16;i++) {
 			seat[i]=new JPanel();
+			use[i]=new JLabel("비어있음");
 			seat[i].setLayout(null);
 			l_seat[i]=new JLabel((i+1) + "번");
 			l_seat[i].setBounds(58,-30,100,100);
+			use[i].setBounds(50, 60, 70, 30);
+			use[i].setFont(new Font("굴림",Font.BOLD,15));
 			seat[i].setBounds(new Rectangle(1150,o,160,180));
 			o+=190;
 			seat[i].setBackground(new Color(255,228,225));
 			l_seat[i].setFont(new Font("굴림",Font.BOLD,20));
 			seat[i].add(l_seat[i]);
+			seat[i].add(use[i]);
 			left.add(seat[i]);
 		}
+		
 		
 		// ------------------------타이머----------------------------
 		
@@ -145,7 +170,7 @@ public class ShowSeat extends JFrame{
 			second[i].setForeground(Color.BLACK);
 			second[i].setFont(new Font("굴림", Font.PLAIN, 15));
 			
-			seat[i].add(hour[i]);  seat[i].add(minute[i]);   seat[i].add(second[i]);
+			//seat[i].add(hour[i]);  seat[i].add(minute[i]);   seat[i].add(second[i]);
 		}		
 	}
 	
@@ -182,7 +207,11 @@ public class ShowSeat extends JFrame{
 						minute[seatNum-1].setText(minutes + "분");
 						hour[seatNum-1].setText(hours + "시");
 					} catch(Exception e) {	}
-				    if(state==false) break;
+				    if(state==false) {
+				    	seat[seatNum-1].setBackground(new Color(255,228,225));
+				    	use[seatNum-1].setText("비어있음");
+				    	break;
+				    }
 				}  // while 끝
 			}  // run() 끝
 		};// Thread 끝	
@@ -226,6 +255,7 @@ public class ShowSeat extends JFrame{
 		food.setBounds(1375,10, 530, 291);
 		right.add(food);
 	}
+	
 	public void dbConnect() {
 		String dbURL="jdbc:mysql://127.0.0.1:3306/pc_room?serverTimezone=UTC";
 		String jdbc_driver="com.mysql.cj.jdbc.Driver";
@@ -243,8 +273,8 @@ public class ShowSeat extends JFrame{
 			while(rs.next()) {
 				seatNum=rs.getInt("num");
 				changeColor();
-				hours=rs.getInt("time");
-				startTimer();
+				//hours=rs.getInt("time");
+				//startTimer();
 				
 			}
 			
@@ -256,17 +286,11 @@ public class ShowSeat extends JFrame{
 	}
 	public static void main(String[] args) {
 		ShowSeat s=new ShowSeat();
-		Socket socket=null;
-		try {
-			socket=new Socket("127.0.0.1",7779);
-			
-			System.out.println("성공");
-			s.dbConnect();
-			socket.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		Server server=new Server();
+		//ServerSocket serversocket=null;
+		s.dbConnect();
+		server.setGui(s);
+		server.setting();
+		System.out.println("성공");
 	}
 }
