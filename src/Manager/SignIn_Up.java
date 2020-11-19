@@ -1,18 +1,8 @@
 package Manager;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.Socket;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-//import java.util.Hashtable;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,10 +10,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-
-import org.omg.CORBA.portable.OutputStream;
-
-import Manager.ShowSeat;
 import database.DBnotmember;
 import database.DBmember;
 
@@ -226,7 +212,27 @@ public class SignIn_Up {
 		bnt_DoubleCheck.setBounds(894, 471, 90, 41);
 		Psignup.add(bnt_DoubleCheck);
 		Psignup.setVisible(false);
-		
+		//아이디 중복확인
+		bnt_DoubleCheck.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				DBmember db = new DBmember();
+				 if( db.checkid(T_SId.getText()) ){ //중복아니다.(사용가능)
+	                  //messageBox(this, T_SId.getText()+"는 사용가능합니다.");
+	                  JOptionPane.showMessageDialog(null, T_SId.getText()+"는 사용가능합니다.");
+	              }else{ //중복이다.
+	                  JOptionPane.showMessageDialog(null, T_SId.getText()+"는 중복입니다.");
+	                 
+	                  T_SId.setText("");//text박스지우기
+	                  T_SId.requestFocus();//커서놓기
+	              }
+			}
+
+
+			
+		});
 		
 		
 		
@@ -380,8 +386,9 @@ public class SignIn_Up {
 		String t_Password=PF_SPassword.getPassword().toString();
 			
 		member="회원";
-		DBmember db=new DBmember(member, t_SId, t_Password, t_SName);
-			
+		DBmember db=new DBmember();
+		db.insert(member, t_SId, t_Password, t_SName);	
+		
 		//DBsignup.createCustomer(t_SName, t_SId, t_Password);
 		JOptionPane.showMessageDialog(null, "회원가입 되었습니다. 로그인 해주세요.");
 		Pmember.setVisible(true);
@@ -392,14 +399,6 @@ public class SignIn_Up {
 	}
 	public static void main(String[] args) {
 		SignIn_Up s=new SignIn_Up();
-		Socket socket=null;
-		try {
-			socket=new Socket("127.0.0.1",7778);
-			
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-		
 	}
 
 }

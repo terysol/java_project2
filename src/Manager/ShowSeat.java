@@ -24,8 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-
-import database.DBfood_list;
+import database.DBfoodlist;
 
 
 public class ShowSeat extends JFrame{
@@ -231,8 +230,8 @@ public class ShowSeat extends JFrame{
 					"자리","음식","개수","메모"
 				}
 			));
-		DBfood_list DB=new DBfood_list();
-		String sql="SELECT * FROM food1";
+		DBfoodlist DB=new DBfoodlist();
+		String sql="SELECT  FROM FoodList";
 		//String sql2="SELECT SEC_TO_TIME(sum(TIME_TO_SEC(time))) FROM test";
 		try {
 			DB.pstmt=DB.conn.prepareStatement(sql);
