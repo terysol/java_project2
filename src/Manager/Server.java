@@ -17,10 +17,11 @@ public class Server {
 
 	public void setting() {
 		try {
-			serversocket=new  ServerSocket(7775);
+			serversocket=new  ServerSocket(7776);
 			System.out.println("¥Î±‚¡ﬂ...");
 			socket=serversocket.accept();
 			gui.dbConnect();
+			gui.showTable();
 			socket.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

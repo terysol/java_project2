@@ -10,7 +10,7 @@ public class DBfooddelete {
 	PreparedStatement pstmt=null;
 	ResultSet rs;
 	
-	public DBfooddelete(String SeatNum) {
+	public DBfooddelete(String data) {
 		String dbinfor="jdbc:mysql://127.0.0.1:3306/pc_room?serverTimezone=UTC";
 		String dbID="root";
 		String dbPW="mirim2";
@@ -18,9 +18,9 @@ public class DBfooddelete {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn=DriverManager.getConnection(dbinfor,dbID,dbPW);
 			
-			String sql="DELETE FROM FoodList WHERE SeatNum=?";
+			String sql="DELETE FROM FoodList WHERE SeatNum = ?";
 			pstmt=conn.prepareStatement(sql);
-			pstmt.setString(1, SeatNum);
+			pstmt.setString(1, data);
 			pstmt.executeUpdate();
 			
 			conn.close();

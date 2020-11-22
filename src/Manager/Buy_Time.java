@@ -103,7 +103,15 @@ public class Buy_Time implements ActionListener{
 		food.setBounds(0, 0, 228, 73);
 		panel.add(food);
 		
-		
+		food.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				FoodExam f=new FoodExam();
+				f.setVisible(true);
+			}
+		});
 		
 
 	}

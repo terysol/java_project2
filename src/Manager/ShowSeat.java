@@ -1,7 +1,10 @@
 package Manager;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -17,13 +20,18 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
+import database.DBfooddelete;
 import database.DBfoodlist;
 
 
@@ -31,7 +39,7 @@ public class ShowSeat extends JFrame{
 	JPanel left=new JPanel();
 	JPanel right= new JPanel();
 	Container c=getContentPane();
-	JTable food=new JTable();
+	JTable food;
 	JPanel [] seat=new JPanel[16];
 	JLabel [] l_seat=new JLabel[16];
 	JLabel []hour = new JLabel[16];
@@ -39,14 +47,15 @@ public class ShowSeat extends JFrame{
 	JLabel[] second = new JLabel[16];
 	JLabel [] use=new JLabel[16];
 	JLabel []foodName=new JLabel[16];
-	
-	ServerBackground server=new ServerBackground();
+	JButton success=new JButton("완료");
 	
 	String dbURL="jdbc:mysql://127.0.0.1:3306/pc_room?serverTimezone=UTC";
 	String jdbc_driver="com.mysql.cj.jdbc.Driver";
 	Connection conn=null;
 	PreparedStatement pstmt = null;
 	ResultSet rs;
+	String dbID="root";
+	String dbPW="mirim2";
 	
 	int milliseconds = 550;
 	int seconds = 0;
@@ -55,10 +64,7 @@ public class ShowSeat extends JFrame{
 	boolean state = true;
 	
 	int seatNum=0;
-	
 
-	
-	// 좌석 선언
 	public ShowSeat() {
 		
 
@@ -69,10 +75,12 @@ public class ShowSeat extends JFrame{
 		manageSeat();
 		setVisible(true);	
 	}
+	
 	public void changeColor() {
 		seat[seatNum-1].setBackground(new Color(10,250,90));
 		use[seatNum-1].setText("사용중");
 	}
+	
 	public void manageSeat() {
 		setTitle("좌석 보여주기");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -218,41 +226,52 @@ public class ShowSeat extends JFrame{
 	}
 
 	public void showTable() {
-		DefaultTableModel model=new DefaultTableModel();
-		model.addColumn("자리");
-		model.addColumn("음식");
-		model.addColumn("개수");
-		model.addColumn("메모");
-		food.setModel(new DefaultTableModel(
-				new Object[][] {
-				},
-				new String[] {
-					"자리","음식","개수","메모"
+		JScrollPane jps = new JScrollPane(food);  
+		String[] columns = {"좌석", "음식", "개수","요구 사항"};
+        DefaultTableModel model=new DefaultTableModel(columns,0);
+       try {
+	            Class.forName(jdbc_driver);
+	            conn=DriverManager.getConnection(dbURL,dbID,dbPW);
+	            pstmt = conn.prepareStatement("SELECT SeatNum, FoodName, count, need FROM foodlist");
+	            rs = pstmt.executeQuery();
+	            
+
+	            while (rs.next()) {
+	                String seatNum = rs.getString("SeatNum");
+	                String FoodName = rs.getString("FoodName");
+	                String count = rs.getString("count");
+	                String need=rs.getString("need");
+
+		          
+		           String[] data = {seatNum, FoodName, count,need};
+
+
+	            	model.addRow(data);
+	            };      
+		 }catch(Exception e) {
+			 e.printStackTrace();
+		 }
+       	 food=new JTable(model);
+	     food.setBounds(1355,20, 550,250);
+		 right.add(food);
+		 right.add(jps);
+		 success.setBounds(1580, 300, 80, 40);
+		 right.add(success);
+		 success.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				int n=food.getSelectedRow();
+				String data=(String) food.getValueAt(n, 0);
+				System.out.println(data);
+				DefaultTableModel tm=(DefaultTableModel)food.getModel();
+				if(n>=0 && n<food.getRowCount()) {
+					DBfooddelete db=new DBfooddelete(data);
+					tm.removeRow(n);
 				}
-			));
-		DBfoodlist DB=new DBfoodlist();
-		String sql="SELECT  FROM FoodList";
-		//String sql2="SELECT SEC_TO_TIME(sum(TIME_TO_SEC(time))) FROM test";
-		try {
-			DB.pstmt=DB.conn.prepareStatement(sql);
-			DB.rs=DB.pstmt.executeQuery();
-			//DB.rs=DB.stmt.executeQuery(sql2);
-			while(DB.rs.next()) {
-				model.addRow(new Object [] {
-						DB.rs.getString("Seat"),
-						DB.rs.getString("Food"),
-						DB.rs.getString("Num"),
-						DB.rs.getString("Memo")
-				});
 			}
-			food.setModel(model);
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-		food.setModel(model);
-		food.setModel(model);
-		food.setBounds(1375,10, 530, 291);
-		right.add(food);
+		});
 	}
 	
 	public void dbConnect() {
@@ -283,6 +302,7 @@ public class ShowSeat extends JFrame{
 			e.printStackTrace();
 		}
 	}
+	
 	public static void main(String[] args) {
 		ShowSeat s=new ShowSeat();
 		Server server=new Server();

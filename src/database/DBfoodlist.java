@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+
+import javax.swing.table.DefaultTableModel;
 
 public class DBfoodlist {
 	public Connection conn=null;
@@ -21,7 +24,7 @@ public class DBfoodlist {
 		String dbPW = "mirim2";
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			this.conn = java.sql.DriverManager.getConnection(dbinfor, dbID, dbPW);
+			this.conn = DriverManager.getConnection(dbinfor, dbID, dbPW);
 			this.stmt = this.conn.createStatement();
 		} catch (Exception e) {
 			System.out.println("connection error:" + e);
@@ -51,7 +54,27 @@ public class DBfoodlist {
 			System.out.println("connection error:" + e);
 		}
 	}
-	public void showList() {
+	public DefaultTableModel showList() {
+		String [] title= {"자리","음식","개수","메모"};
+		String sql="SELECT SeatNum, FoodName, count, need FROM foodlist;";
+		DefaultTableModel model=new DefaultTableModel();
+		model.addRow(title);
 		
+		try {
+			pstmt=conn.prepareStatement(sql);
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				model.addRow(new Object [] {
+						rs.getString("SeatNum"),
+						rs.getString("FoodName"),
+						rs.getString("count"),
+						rs.getString("need")
+				});
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return model;
 	}
 }
