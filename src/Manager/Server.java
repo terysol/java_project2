@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Server {
+public class Server implements Runnable{
 	ServerSocket serversocket=null;
 	Socket socket=null;
 	ShowSeat gui;
@@ -17,15 +17,22 @@ public class Server {
 
 	public void setting() {
 		try {
-			serversocket=new  ServerSocket(7776);
+			serversocket=new  ServerSocket(7779);
 			System.out.println("¥Î±‚¡ﬂ...");
 			socket=serversocket.accept();
-			gui.dbConnect();
-			gui.showTable();
+			
 			socket.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		gui.dbConnect();
+		gui.showTable();
 	}
 }

@@ -1,35 +1,45 @@
 package Manager;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+
 
 public class Buy_Time implements ActionListener{
 
 	private JFrame frame;
-	private final JPanel panel = new JPanel();
+	private final JPanel panel;
 	JButton []seat = new JButton[16];
 	JLabel [] l_seat = new JLabel[16];
-	
-	
+	JLabel [] use=new JLabel[16];
+	JButton food;
+	ImageIcon background=new ImageIcon("D:\\2106_2118\\images\\main.png");
+	ImageIcon iconSeat=new ImageIcon("D:\\2106_2118\\images\\seat.png");
+	ImageIcon iconFood=new ImageIcon("D:\\2106_2118\\images\\foodBtn.png");
+	ImageIcon iconSeat_1=new ImageIcon("D:\\2106_2118\\images\\passenger.png");
 
 	public Buy_Time() {
+		panel=new JPanel() {
+			public void paintComponent(Graphics g) {
+				g.drawImage(background.getImage(), 0, 0, null);
+				setOpaque(false);
+				super.paintComponent(g);
+			}
+		};
 		
 		frame = new JFrame("좌석");
 		frame.setBounds(100, 100, 1600, 1000);
@@ -43,16 +53,30 @@ public class Buy_Time implements ActionListener{
 		panel.setLayout(null);
 		
 		
-		int j = 90;
-		for(int i = 0; i<6; i++) {
-			seat[i] = new JButton();
+		
+		int j = 190;
+		for(int i = 0; i<8; i++) {
+			seat[i] = new JButton() {
+				public void paintComponent(Graphics g) {
+					g.drawImage(iconSeat.getImage(), 0, 0, null);
+					setOpaque(false);
+					super.paintComponent(g);
+				}
+			};
+			seat[i].setBorderPainted(false);
 			seat[i].setLayout(null);
 			l_seat[i] = new JLabel((i+1) + "번");
-			l_seat[i].setBounds(65, -30, 100, 100);
-			seat[i].setBounds(new Rectangle(j, 185, 160, 180));//55, 185, 160, 180
-			j+= 170;
+			l_seat[i].setBounds(46, -30, 100, 100);
+			l_seat[i].setForeground(Color.WHITE);
+			seat[i].setBounds(new Rectangle(j, 185, 120, 150));//55, 185, 160, 180
+			j+= 160;
 			seat[i].setBackground(new Color(255, 255, 228, 255));
+			seat[i].setForeground(Color.BLACK);
 			l_seat[i].setFont(new Font("굴림", Font.BOLD, 20));
+			use[i]=new JLabel();
+			use[i].setFont(new Font("굴림", Font.BOLD, 15));
+			use[i].setBounds(40,40,60,40);
+			seat[i].add(use[i]);
 			seat[i].add(l_seat[i]);
 			panel.add(seat[i]);
 			seat[i].addActionListener(this);
@@ -60,47 +84,51 @@ public class Buy_Time implements ActionListener{
 		}
 		
 		
-		int k = 90;
-		for( int i = 6; i<12; i++) {
-			seat[i] = new JButton();
+		int k = 190;
+		for( int i = 8; i<16; i++) {
+			seat[i] = new JButton() {
+				public void paintComponent(Graphics g) {
+					g.drawImage(iconSeat.getImage(), 0, 0, null);
+					setOpaque(false);
+					super.paintComponent(g);
+				}
+			};
+			seat[i].setBorderPainted(false);
+			seat[i].setFocusPainted(false);
 			seat[i].setLayout(null);
 			l_seat[i] = new JLabel((i+1) + "번");
-			l_seat[i].setBounds(60, -30, 100, 100);
-			seat[i].setBounds(new Rectangle(k, 570, 160, 180));//55, 570, 160, 180
-			k+= 170;
+			l_seat[i].setBounds(45, -30, 100, 100);
+			l_seat[i].setForeground(Color.WHITE);
+			seat[i].setBounds(new Rectangle(k, 500, 120, 150));//55, 570, 160, 180
+			k+= 160;
 			seat[i].setBackground(new Color(255, 255, 228, 255));
+			seat[i].setForeground(Color.BLACK);
 			l_seat[i].setFont(new Font("굴림", Font.BOLD, 20));
+			use[i]=new JLabel();
+			use[i].setFont(new Font("굴림", Font.BOLD, 15));
+			use[i].setBounds(40,40,60,40);
+			seat[i].add(use[i]);
 			seat[i].add(l_seat[i]);
 			panel.add(seat[i]);
 			seat[i].addActionListener(this);
 			
 		}
-		
-		
-		int o = 130;
-		for(int i = 12; i<16; i++) {
-			seat[i] = new JButton();
-			seat[i].setLayout(null);
-			l_seat[i] = new JLabel((i+1) + "번");
-			l_seat[i].setBounds(60, -30, 100, 100);
-			seat[i].setBounds(new Rectangle(1200, o, 160, 180));//1167, 486, 160, 180
-			o+= 190;
-			seat[i].setBackground(new Color(255, 255, 228, 255));
-			l_seat[i].setFont(new Font("굴림", Font.BOLD, 20));
-			seat[i].add(l_seat[i]);
-			panel.add(seat[i]);
-			seat[i].addActionListener(this);
-			
-		}		
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(0, 0, 1600, 1000);
-		frame.getContentPane().add(panel_1);
+	
+		frame.getContentPane().add(panel);
 		frame.setVisible(true);
 		
-		JButton food = new JButton("음식");
+		food = new JButton() {
+			public void paintComponent(Graphics g) {
+				g.drawImage(iconFood.getImage(), 0, 0, null);
+				setOpaque(false);
+				super.paintComponent(g);
+			}
+		};
+		food.setBorderPainted(false);  // 외곽선 없애주기
+		food.setContentAreaFilled(false);  // 버튼 투명 하게 
+		food.setFocusPainted(false);  // 선택하면 테두리 안 나오게
 		food.setFont(new Font("굴림", Font.BOLD, 40));
-		food.setBounds(0, 0, 228, 73);
+		food.setBounds(30, 850, 200, 100);
 		panel.add(food);
 		
 		food.addActionListener(new ActionListener() {
@@ -134,8 +162,9 @@ public class Buy_Time implements ActionListener{
 				seatNum=rs.getInt("num");
 				//System.out.println(seatNum);
 				seat[seatNum-1].setEnabled(false);
-				seat[seatNum-1].setText("사용중");
-				seat[seatNum-1].setBackground(Color.LIGHT_GRAY);
+				seat[seatNum-1].setFont(new Font("굴림", Font.BOLD, 20));
+				//seat[seatNum-1].setForeground(Color.BLACK);
+				use[seatNum-1].setText("사용중");
 			}
 			
 		}catch(ClassNotFoundException e1) {
@@ -161,8 +190,10 @@ public class Buy_Time implements ActionListener{
 				Modal m =new Modal(i);
 				m.setVisible(true);
 				seat[i].setEnabled(false);
-				seat[i].setText("사용중");
-				seat[i].setBackground(Color.LIGHT_GRAY);
+				seat[i].setFont(new Font("굴림", Font.BOLD, 20));
+				//seat[i].setForeground(Color.BLACK);
+				use[i].setText("사용중");
+				
 				//System.out.println(i);
 				break;
 				

@@ -32,9 +32,10 @@ public class FoodExam extends JFrame {
 	int count = 0;
 	String showfood = "";
 	int k;
-	String menu[] = { "탄산음료", "삼양라면", "짜파게티", "소떡소떡", "제육덮밥", "카레덮밥", "치킨너겟", "대창덮밥" };// 메뉴
+	String menu[] = { "탄산음료", "삼양라면", "짜파게티", "소떡소떡", "샌드위치", "샐러드", "카레덮밥", "치킨너겟" };// 메뉴
 	int price[] = { 1000, 2500, 3000, 3000, 4500, 5000, 5500, 9000 };// 메뉴가격
 	JButton bt[] = new JButton[menu.length];// 햄버거 버튼 누른 후에 수량 입력할 수있게
+	JLabel jl[] = new JLabel[menu.length];
 	JTextField quantity[] = new JTextField[menu.length]; // 몇개 주문할건지
 	JButton minus[] = new JButton[menu.length];// 수량 빼기
 	JButton plus[] = new JButton[menu.length];// 수량 더하기
@@ -58,21 +59,82 @@ public class FoodExam extends JFrame {
 		Panel panel = new Panel();
 		panel.setBackground(new Color(128, 0, 128));
 		panel.setLayout(null);
-		panel.setSize(0,500);
+		panel.setSize(0, 500);
 		// 배열 설정 부분
 		
+		ImageIcon drink=new ImageIcon("D:\\2106_2118\\images\\drink.png");
+		ImageIcon ramen=new ImageIcon("D:\\2106_2118\\images\\ramen.png");
+		ImageIcon jajang=new ImageIcon("D:\\2106_2118\\images\\jajang.png");
+		ImageIcon so_tteok=new ImageIcon("D:\\2106_2118\\images\\so_tteok.png");
+		ImageIcon sandwich=new ImageIcon("D:\\2106_2118\\images\\sandwich.png");
+		ImageIcon salad=new ImageIcon("D:\\2106_2118\\images\\salad.png");
+		ImageIcon curry=new ImageIcon("D:\\2106_2118\\images\\curry.png");
+		ImageIcon chicken=new ImageIcon("D:\\2106_2118\\images\\chicken.png");
 
 		// 버튼 설정 부분
 		for (int i = 0; i < menu.length; i++) {
 
 			// 음식 버튼
 			bt[i] = new JButton(menu[i]);
+			switch(i) {
+			case 0:
+				bt[i]=new JButton(drink);
+				bt[i].setContentAreaFilled(false);
+				bt[i].setBorderPainted(false);  // 외곽선 없애주기
+				bt[i].setFocusPainted(false);  // 선택하면 테두리 안 나오게 
+				break;
+			case 1:
+				bt[i]=new JButton(ramen);
+				bt[i].setContentAreaFilled(false);
+				bt[i].setBorderPainted(false);  // 외곽선 없애주기
+				bt[i].setFocusPainted(false);  // 선택하면 테두리 안 나오게
+				break;
+			case 2:
+				bt[i]=new JButton(jajang);
+				bt[i].setContentAreaFilled(false);
+				bt[i].setBorderPainted(false);  // 외곽선 없애주기
+				bt[i].setFocusPainted(false);  // 선택하면 테두리 안 나오게
+				break;
+			case 3:
+				bt[i]=new JButton(so_tteok);
+				bt[i].setContentAreaFilled(false);
+				bt[i].setBorderPainted(false);  // 외곽선 없애주기
+				bt[i].setFocusPainted(false);  // 선택하면 테두리 안 나오게
+				break;
+			case 4:
+				bt[i]=new JButton(sandwich);
+				bt[i].setContentAreaFilled(false);
+				bt[i].setBorderPainted(false);  // 외곽선 없애주기
+				bt[i].setFocusPainted(false);  // 선택하면 테두리 안 나오게
+				break;
+			case 5:
+				bt[i]=new JButton(salad);
+				bt[i].setContentAreaFilled(false);
+				bt[i].setBorderPainted(false);  // 외곽선 없애주기
+				bt[i].setFocusPainted(false);  // 선택하면 테두리 안 나오게
+				break;
+			case 6:
+				bt[i]=new JButton(curry);
+				bt[i].setContentAreaFilled(false);
+				bt[i].setBorderPainted(false);  // 외곽선 없애주기
+				bt[i].setFocusPainted(false);  // 선택하면 테두리 안 나오게
+				break;
+			case 7:
+				bt[i]=new JButton(chicken);
+				bt[i].setContentAreaFilled(false);
+				bt[i].setBorderPainted(false);  // 외곽선 없애주기
+				bt[i].setFocusPainted(false);  // 선택하면 테두리 안 나오게
+				break;
+			}
+
 			bt[i].setBackground(new Color(255, 255, 228, 255));
 			if (i < 4) {
 				bt[i].setBounds(25 + i * 150, 50, 100, 100);
 			} else {
 				bt[i].setBounds(25 + (i - 4) * 150, 300, 100, 100);
 			}
+			
+//			
 
 			// 숫자 txt 버튼
 			quantity[i] = new JTextField("0");
@@ -95,17 +157,23 @@ public class FoodExam extends JFrame {
 			// 가격
 			value[i] = new JLabel(price[i] + "원");
 			value[i].setForeground(Color.WHITE);// 가격 글씨 색상
-			value[i].setBounds(bt[i].getX() + 20, quantity[i].getY() - 25, 100, 20);
+			value[i].setBounds(bt[i].getX() + 60, quantity[i].getY() - 25, 100, 20);
+			
+			// 음식 라벨
+			jl[i] = new JLabel(menu[i]);
+			jl[i].setBackground(new Color(255, 255, 228, 255));
+			jl[i].setForeground(Color.WHITE);// 가격 글씨 색상
+			jl[i].setBounds(bt[i].getX(), quantity[i].getY() - 25, 100, 20);
 
 			// 확인 버튼
 			ok[i] = new JButton("확인");
 			ok[i].setBounds(bt[i].getX(), quantity[i].getY() + 30, 100, 20);
 			ok[i].setEnabled(false);
 
-			
-			need.setBounds(600, 300, 350, 180);
+			need.setBounds(600, 300, 350, 180);// x, y, w, h
 
 			panel.add(bt[i]);
+			panel.add(jl[i]);
 			panel.add(quantity[i]);
 			panel.add(minus[i]);
 			panel.add(plus[i]);
@@ -114,8 +182,9 @@ public class FoodExam extends JFrame {
 			panel.add(need);
 		}
 
+
 		// 중앙
-		
+
 		ta.setText("    좌석번호        상품명        단가        수량        합계        요구사항\n\n");
 		ta.setBackground(Color.white);
 		ta.setEditable(false);
@@ -125,20 +194,32 @@ public class FoodExam extends JFrame {
 		Panel panel2 = new Panel();
 		panel2.setBackground(new Color(128, 0, 128));
 
-		JButton bt1 = new JButton("주문");
-		JButton bt2 = new JButton("초기화");
-		panel2.add(bt1);
-		panel2.add(bt2);
+		ImageIcon iconOrder=new ImageIcon("D:\\2106_2118\\images\\order.png");
+		JButton order = new JButton(iconOrder);
+		order.setContentAreaFilled(false);
+		order.setBorderPainted(false);  // 외곽선 없애주기
+		order.setFocusPainted(false);  // 선택하면 테두리 안 나오게
+
+
+		ImageIcon iconReset=new ImageIcon("D:\\2106_2118\\images\\reset.png");
+		JButton reset = new JButton(iconReset);
+		reset.setContentAreaFilled(false);
+		reset.setBorderPainted(false);  // 외곽선 없애주기
+		reset.setFocusPainted(false);  // 선택하면 테두리 안 나오게
+		
+		panel2.add(order);
+		panel2.add(reset);
 
 		// 주문버튼
-		bt1.addActionListener(new ActionListener() {
+		order.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(null, ta.getText() + "\n 주문되었습니다. \n이용해주셔서 감사합니다.");
-				
+
 				for (int i = 0; i < menu.length; i++) {
-					//DBfoodlist db=new DBfoodlist(seatNum, showfood, p, count, p * count, need.getText());
+					// DBfoodlist db=new DBfoodlist(seatNum, showfood, p, count, p * count,
+					// need.getText());
 					bt[i].setEnabled(true);
 					minus[i].setEnabled(false);
 					plus[i].setEnabled(false);
@@ -148,9 +229,9 @@ public class FoodExam extends JFrame {
 				}
 			}
 		});
-		
+
 		// 초기화 버튼
-		bt2.addActionListener(new ActionListener() {
+		reset.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -161,23 +242,30 @@ public class FoodExam extends JFrame {
 					quantity[i].setText("0");
 					seat[i].setEnabled(true);
 					seat[i].setBackground(new Color(255, 255, 228, 255));
-					DBfooddelete db=new DBfooddelete(seatNum);
+					DBfooddelete db = new DBfooddelete(seatNum);
 					ta.setText("    좌석번호        상품명        단가        수량        합계        요구사항\n\n");
 
 				}
 			}
 		});
 		need.addMouseListener(new MouseListener() {
-			
+
 			@Override
-			public void mouseReleased(MouseEvent e) {}
+			public void mouseReleased(MouseEvent e) {
+			}
+
 			@Override
-			public void mousePressed(MouseEvent e) {}
+			public void mousePressed(MouseEvent e) {
+			}
+
 			@Override
-			public void mouseExited(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {
+			}
+
 			@Override
-			public void mouseEntered(MouseEvent e) {}
-	
+			public void mouseEntered(MouseEvent e) {
+			}
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				// TODO Auto-generated method stub
@@ -208,12 +296,12 @@ public class FoodExam extends JFrame {
 				// 만들어진 버튼 "새 창 띄우기"에 버튼이 눌러지면 발생하는 행동을 정의
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					for(int i=0;i<seat.length;i++) {
-						if(e.getSource()==seat[i]) {
+					for (int i = 0; i < seat.length; i++) {
+						if (e.getSource() == seat[i]) {
 							seatNum = l_seat[i].getText();
 							l_seat[i].setSize(30, 30);
-			            	ta.append("      " + seatNum);
-			            	
+							ta.append("      " + seatNum);
+
 						}
 					}
 
@@ -235,16 +323,16 @@ public class FoodExam extends JFrame {
 			l_seat[k].setFont(new Font("굴림", Font.BOLD, 15));
 			seat[k].add(l_seat[k]);
 			panel.add(seat[k]);
-			
+
 			seat[k].addActionListener(new ActionListener() {// 버튼을 누르면
 				// 만들어진 버튼 "새 창 띄우기"에 버튼이 눌러지면 발생하는 행동을 정의
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					for(int i=0;i<seat.length;i++) {
-						if(e.getSource()==seat[i]) {
+					for (int i = 0; i < seat.length; i++) {
+						if (e.getSource() == seat[i]) {
 							seatNum = l_seat[i].getText();
-			            	ta.append( "      " + seatNum);
-			            	
+							ta.append("      " + seatNum);
+
 						}
 					}
 
@@ -266,15 +354,15 @@ public class FoodExam extends JFrame {
 			l_seat[k].setFont(new Font("굴림", Font.BOLD, 15));
 			seat[k].add(l_seat[k]);
 			panel.add(seat[k]);
-			
+
 			seat[k].addActionListener(new ActionListener() {// 버튼을 누르면
 				// 만들어진 버튼 "새 창 띄우기"에 버튼이 눌러지면 발생하는 행동을 정의
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					for(int i=0;i<seat.length;i++) {
-						if(e.getSource()==seat[i]) {
+					for (int i = 0; i < seat.length; i++) {
+						if (e.getSource() == seat[i]) {
 							seatNum = l_seat[i].getText();
-			            	ta.append( "      " + seatNum);
+							ta.append("      " + seatNum);
 						}
 					}
 
@@ -295,12 +383,10 @@ public class FoodExam extends JFrame {
 					plus[j].setEnabled(true);
 					bt[j].setEnabled(false);
 					ok[j].setEnabled(true);
-					
+
 					count = 0;
 				}
 			});
-
-		
 
 			// "-" 버튼 이벤트
 			minus[i].addActionListener(new ActionListener() {
@@ -337,20 +423,20 @@ public class FoodExam extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					showfood = bt[j].getActionCommand();
-					ta.append("\t   " + showfood);
+					ta.append("\t   " + jl[j].getText());
 					ta.append("       " + price[j]);
-					ta.append("        " + count); 
+					ta.append("        " + count);
 					ta.append("         " + price[j] * count);
 					ta.append("원" + "         " + need.getText() + "\n");
-					DBfoodlist db=new DBfoodlist();
-					db.foodlist(seatNum, showfood, price[j], count, price[j]*count, need.getText());
+					DBfoodlist db = new DBfoodlist();
+					db.foodlist(seatNum, jl[j].getText(), price[j], count, price[j] * count, need.getText());
 					bt[j].setEnabled(true);
 					minus[j].setEnabled(false);
 					plus[j].setEnabled(false);
 					quantity[j].setText("0");
 					ok[j].setEnabled(false);
 					need.setText("");
-				
+
 				}
 			});
 

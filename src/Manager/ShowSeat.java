@@ -1,38 +1,30 @@
 package Manager;
 
-import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import database.DBfooddelete;
-import database.DBfoodlist;
+
 
 
 public class ShowSeat extends JFrame{
@@ -47,15 +39,17 @@ public class ShowSeat extends JFrame{
 	JLabel[] second = new JLabel[16];
 	JLabel [] use=new JLabel[16];
 	JLabel []foodName=new JLabel[16];
-	JButton success=new JButton("완료");
+	JButton success;
+	
 	
 	String dbURL="jdbc:mysql://127.0.0.1:3306/pc_room?serverTimezone=UTC";
 	String jdbc_driver="com.mysql.cj.jdbc.Driver";
 	Connection conn=null;
 	PreparedStatement pstmt = null;
-	ResultSet rs;
+	ResultSet rs=null;
 	String dbID="root";
 	String dbPW="mirim2";
+	ImageIcon complete=new ImageIcon("D:\\2106_2118\\images\\complete.png");
 	
 	int milliseconds = 550;
 	int seconds = 0;
@@ -66,12 +60,8 @@ public class ShowSeat extends JFrame{
 	int seatNum=0;
 
 	public ShowSeat() {
-		
-
 		//음식 보여주는 table
 		showTable();
-		
-		// 좌석가로 1
 		manageSeat();
 		setVisible(true);	
 	}
@@ -156,75 +146,9 @@ public class ShowSeat extends JFrame{
 			seat[i].add(l_seat[i]);
 			seat[i].add(use[i]);
 			left.add(seat[i]);
-		}
-		
-		
-		// ------------------------타이머----------------------------
-		
-		for(int i=0;i<hour.length;i++) {
-			hour[i]=new JLabel("00시");
-			hour[i].setBounds(20, 135, 60, 45);
-			hour[i].setForeground(Color.BLACK);
-			hour[i].setFont(new Font("굴림", Font.PLAIN, 15));
-			
-			minute[i]=new JLabel("00분");
-			minute[i].setBounds(60,135,60,45);
-			minute[i].setForeground(Color.BLACK);
-			minute[i].setFont(new Font("굴림", Font.PLAIN, 15));
-			
-			second[i]=new JLabel("00초");
-			second[i].setBounds(100,135, 95, 46);
-			second[i].setForeground(Color.BLACK);
-			second[i].setFont(new Font("굴림", Font.PLAIN, 15));
-			
-			//seat[i].add(hour[i]);  seat[i].add(minute[i]);   seat[i].add(second[i]);
-		}		
+		}	
 	}
 	
-	public void startTimer() {
-		state = true;  //시작한다
-		Thread t = new Thread() {
-			public void run() {
-				while(state){
-					try {
-						sleep(2);
-						if(milliseconds<0) {
-							milliseconds=550;
-							seconds--;
-						}if(seconds<0) {
-							milliseconds=550;
-							seconds=59;
-							minutes--;
-						}if(minutes<0) {
-							milliseconds=550;
-							seconds=59;
-							minutes=59;
-							hours--;
-						}
-						if(hours<=0 && minutes<=0 && seconds<=0 && milliseconds<=0) {
-							milliseconds=0;
-							seconds=0;
-							minutes=0;
-							hours=0;
-							state=false;
-						}
-						milliseconds--;
-								
-						second[seatNum-1].setText(seconds + "초");
-						minute[seatNum-1].setText(minutes + "분");
-						hour[seatNum-1].setText(hours + "시");
-					} catch(Exception e) {	}
-				    if(state==false) {
-				    	seat[seatNum-1].setBackground(new Color(255,228,225));
-				    	use[seatNum-1].setText("비어있음");
-				    	break;
-				    }
-				}  // while 끝
-			}  // run() 끝
-		};// Thread 끝	
-		t.start();
-	}
-
 	public void showTable() {
 		JScrollPane jps = new JScrollPane(food);  
 		String[] columns = {"좌석", "음식", "개수","요구 사항"};
@@ -255,7 +179,11 @@ public class ShowSeat extends JFrame{
 	     food.setBounds(1355,20, 550,250);
 		 right.add(food);
 		 right.add(jps);
+		 success=new JButton(complete);
 		 success.setBounds(1580, 300, 80, 40);
+		 success.setBorderPainted(false);  // 외곽선 없애주기
+		 success.setContentAreaFilled(false);  // 버튼 투명 하게 
+		 success.setFocusPainted(false);  // 선택하면 테두리 안 나오게
 		 right.add(success);
 		 success.addActionListener(new ActionListener() {
 			
@@ -264,7 +192,6 @@ public class ShowSeat extends JFrame{
 				// TODO Auto-generated method stub
 				int n=food.getSelectedRow();
 				String data=(String) food.getValueAt(n, 0);
-				System.out.println(data);
 				DefaultTableModel tm=(DefaultTableModel)food.getModel();
 				if(n>=0 && n<food.getRowCount()) {
 					DBfooddelete db=new DBfooddelete(data);
@@ -306,10 +233,12 @@ public class ShowSeat extends JFrame{
 	public static void main(String[] args) {
 		ShowSeat s=new ShowSeat();
 		Server server=new Server();
+		Thread th=new Thread(server);
 		//ServerSocket serversocket=null;
 		s.dbConnect();
 		server.setGui(s);
 		server.setting();
+		th.start();
 		System.out.println("성공");
 	}
 }

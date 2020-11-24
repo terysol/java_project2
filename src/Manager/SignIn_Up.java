@@ -1,8 +1,11 @@
 package Manager;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,12 +27,16 @@ public class SignIn_Up {
 	 JPasswordField PF_SPassword;
 	 JTextField T_SName;
 	
-	JButton B_member = new JButton("회원");//회원
-	JButton B_Nmember = new JButton("비회원");//비회원
-	JLabel L_Id = new JLabel("아이디 : ");
+	JButton B_member ;//회원
+	JButton B_Nmember;//비회원
+	JButton B_SignUp;
 	
 	String member="";
-	
+	JButton B_Back;
+	ImageIcon background=new ImageIcon("D:\\2106_2118\\images\\main_1.png");
+	ImageIcon arrow=new ImageIcon("D:\\2106_2118\\images\\left.png");
+	ImageIcon login=new ImageIcon("D:\\2106_2118\\images\\login.png");
+
 	public SignIn_Up() {
 		frame = new JFrame();
 		frame.setTitle("메인화면");
@@ -46,7 +53,13 @@ public class SignIn_Up {
 		
 		
 		
-		final JPanel PNmember = new JPanel();//비회원 화면
+		final JPanel PNmember = new JPanel() {
+			public void paintComponent(Graphics g) {
+				g.drawImage(background.getImage(), 0, 0, null);
+				setOpaque(false);
+				super.paintComponent(g);
+			}
+		};//비회원 화면
 		PNmember.setBackground(new Color(128,0,128));
 		PNmember.setBounds(0, 0, 1395, 965);
 		frame.getContentPane().add(PNmember);
@@ -55,43 +68,49 @@ public class SignIn_Up {
 		JLabel L_NLing = new JLabel("비회원 Login");
 		L_NLing.setForeground(Color.WHITE);
 		L_NLing.setFont(new Font("HY동녘M", Font.PLAIN, 50));
-		L_NLing.setBounds(557, 221, 318, 98);
+		L_NLing.setBounds(550, 110, 318, 98);
 		PNmember.add(L_NLing);
 		
 		JLabel L_NCardnumber = new JLabel("카드 번호 : ");
 		L_NCardnumber.setForeground(Color.WHITE);
-		L_NCardnumber.setBounds(484, 447, 204, 45);
+		L_NCardnumber.setBounds(484, 350, 204, 41);
 		PNmember.add(L_NCardnumber);
 		L_NCardnumber.setFont(new Font("굴림", Font.BOLD, 30));
 		
 		T_NCardnumber = new JTextField();
 		T_NCardnumber.setFont(new Font("굴림", Font.PLAIN, 30));
 		T_NCardnumber.setColumns(10);
-		T_NCardnumber.setBounds(702, 449, 216, 41);
+		T_NCardnumber.setBounds(670, 350, 216, 41);
 		PNmember.add(T_NCardnumber);
 		
-		JButton B_NLogin = new JButton("로그인");
+		JButton B_NLogin = new JButton(login);
 		B_NLogin.setFont(new Font("굴림", Font.PLAIN, 20));
-		B_NLogin.setBounds(654, 675, 105, 27);
+		B_NLogin.setBounds(655, 550, 100, 50);
+		B_NLogin.setBorderPainted(false);  // 외곽선 없애주기
+		B_NLogin.setContentAreaFilled(false);  // 버튼 투명 하게 
+		B_NLogin.setFocusPainted(false);  // 선택하면 테두리 안 나오게
 		PNmember.add(B_NLogin);
 		
-		JButton B_NBack = new JButton("←");
+		JButton B_NBack = new JButton(arrow);
 		B_NBack.setFont(new Font("굴림", Font.BOLD, 50));
 		B_NBack.setBounds(14, 908, 90, 45);
 		PNmember.add(B_NBack);
+		B_NBack.setBorderPainted(false);  // 외곽선 없애주기
+		B_NBack.setContentAreaFilled(false);  // 버튼 투명 하게 
+		B_NBack.setFocusPainted(false);  // 선택하면 테두리 안 나오게
 		PNmember.setVisible(false);
-		
-		
-
-
-		
-
 		
 		//==================================================
 		
 		
 		
-		final JPanel Pmember = new JPanel();//회원 화면
+		final JPanel Pmember = new JPanel() {
+			public void paintComponent(Graphics g) {
+				g.drawImage(background.getImage(), 0, 0, null);
+				setOpaque(false);
+				super.paintComponent(g);
+			}
+		};//회원 화면
 		Pmember.setBackground(new Color(128,0,128));
 		Pmember.setBounds(0, 0, 1395, 965);
 		frame.getContentPane().add(Pmember);
@@ -99,58 +118,66 @@ public class SignIn_Up {
 		
 		JLabel L_Login = new JLabel("회원 Login");
 		L_Login.setForeground(Color.WHITE);
-		L_Login.setBounds(601, 153, 264, 98);
+		L_Login.setBounds(600, 110, 264, 98);
 		L_Login.setFont(new Font("HY동녘M", Font.PLAIN, 50));
 		Pmember.add(L_Login);
 		
-		
+		JLabel L_Id = new JLabel("아이디 : ");
 		L_Id.setForeground(Color.WHITE);
-		L_Id.setBounds(527, 394, 132, 45);
+		L_Id.setBounds(527, 320, 132, 45);
 		L_Id.setFont(new Font("굴림", Font.BOLD, 30));
 		Pmember.add(L_Id);
 		
 		T_Id = new JTextField();
-		T_Id.setBounds(673, 394, 216, 41);
+		T_Id.setBounds(673, 320, 216, 41);
 		T_Id.setFont(new Font("굴림", Font.PLAIN, 30));
 		Pmember.add(T_Id);
 		T_Id.setColumns(10);
 		
 		JLabel L_Password = new JLabel("비밀번호 : ");
 		L_Password.setForeground(Color.WHITE);
-		L_Password.setBounds(527, 472, 170, 45);
+		L_Password.setBounds(495, 450, 170, 45);
 		L_Password.setFont(new Font("굴림", Font.BOLD, 30));
 		Pmember.add(L_Password);
 		
 		T_Password = new JPasswordField();
-		T_Password.setBounds(700, 474, 216, 41);
+		T_Password.setBounds(673, 450, 216, 41);
 		T_Password.setFont(new Font("굴림", Font.PLAIN, 30));
 		T_Password.setColumns(10);
 		Pmember.add(T_Password);
 		
-		JButton B_Login = new JButton("로그인");
-		B_Login.setBounds(673, 793, 105, 27);
+		JButton B_Login = new JButton(login);
+		B_Login.setBounds(656, 600, 100, 50);
 		B_Login.setFont(new Font("굴림", Font.PLAIN, 20));
+		B_Login.setBorderPainted(false);  // 외곽선 없애주기
+		B_Login.setContentAreaFilled(false);  // 버튼 투명 하게 
+		B_Login.setFocusPainted(false);  // 선택하면 테두리 안 나오게
 		Pmember.add(B_Login);
 		
-		JButton B_Back = new JButton("←");
+		
+		B_Back = new JButton(arrow);
 		B_Back.setFont(new Font("굴림", Font.BOLD, 50));
 		B_Back.setBounds(14, 908, 90, 45);
+		B_Back.setBorderPainted(false);  // 외곽선 없애주기
+		B_Back.setContentAreaFilled(false);  // 버튼 투명 하게 
+		B_Back.setFocusPainted(false);  // 선택하면 테두리 안 나오게
 		Pmember.add(B_Back);
 		
 		
 		
 		Pmember.setVisible(false);
 		
-	
-		
-		
-		
-		
 		//==================================================        
 		
 		
-		
-		final JPanel Psignup = new JPanel();//회원가입 화면
+		// 회원가입 화면
+		final JPanel Psignup = new JPanel() {
+			public void paintComponent(Graphics g) {
+				g.drawImage(background.getImage(), 0, 0, null);
+				setOpaque(false);
+				super.paintComponent(g);
+			}
+		};
 		Psignup.setBackground(new Color(128,0,128));
 		Psignup.setBounds(0, 0, 1395, 965);
 		frame.getContentPane().add(Psignup);
@@ -159,59 +186,71 @@ public class SignIn_Up {
 		JLabel L_Sinup = new JLabel("회원가입");
 		L_Sinup.setForeground(Color.WHITE);
 		L_Sinup.setFont(new Font("HY동녘M", Font.PLAIN, 50));
-		L_Sinup.setBounds(552, 195, 213, 98);
+		L_Sinup.setBounds(600, 110, 213, 98);
 		Psignup.add(L_Sinup);
 		
 		JLabel L_SName = new JLabel("이름 : ");
 		L_SName.setForeground(Color.WHITE);
 		L_SName.setFont(new Font("굴림", Font.BOLD, 30));
-		L_SName.setBounds(512, 382, 132, 45);
+		L_SName.setBounds(545, 290, 132, 45);
 		Psignup.add(L_SName);
 		
 		T_SName = new JTextField();
 		T_SName.setFont(new Font("굴림", Font.PLAIN, 30));
 		T_SName.setColumns(10);
-		T_SName.setBounds(636, 382, 216, 41);
+		T_SName.setBounds(658, 290, 216, 41);
 		Psignup.add(T_SName);
 		
 		JLabel L_SId = new JLabel("아이디 : ");
 		L_SId.setForeground(Color.WHITE);
 		L_SId.setFont(new Font("굴림", Font.BOLD, 30));
-		L_SId.setBounds(512, 471, 132, 45);
+		L_SId.setBounds(512, 370, 132, 45);
 		Psignup.add(L_SId);
 		
 		T_SId = new JTextField();
 		T_SId.setFont(new Font("굴림", Font.PLAIN, 30));
 		T_SId.setColumns(10);
-		T_SId.setBounds(658, 471, 216, 41);
+		T_SId.setBounds(658, 370, 216, 41);
 		Psignup.add(T_SId);
 		
 		JLabel L_SPassword = new JLabel("비밀번호 : ");
 		L_SPassword.setForeground(Color.WHITE);
 		L_SPassword.setFont(new Font("굴림", Font.BOLD, 30));
-		L_SPassword.setBounds(512, 557, 170, 45);
+		L_SPassword.setBounds(480, 450, 170, 45);
 		Psignup.add(L_SPassword);
 		
 		PF_SPassword = new JPasswordField();
 		PF_SPassword.setFont(new Font("굴림", Font.PLAIN, 30));
 		PF_SPassword.setColumns(10);
-		PF_SPassword.setBounds(684, 559, 216, 41);
+		PF_SPassword.setBounds(658, 450, 216, 41);
 		Psignup.add(PF_SPassword);
 		
-		JButton B_signup = new JButton("회원가입");
+		ImageIcon signup=new ImageIcon("D:\\2106_2118\\images\\signup.png");
+		JButton B_signup = new JButton(signup);
 		B_signup.setFont(new Font("굴림", Font.PLAIN, 20));
-		B_signup.setBounds(609, 765, 132, 27);
+		B_signup.setBounds(650, 560, 132, 60);
+		B_signup.setBorderPainted(false);  // 외곽선 없애주기
+		B_signup.setContentAreaFilled(false);  // 버튼 투명 하게 
+		B_signup.setFocusPainted(false);  // 선택하면 테두리 안 나오게
 		Psignup.add(B_signup);
 		
-		JButton B_SBack = new JButton("←");
+		JButton B_SBack = new JButton(arrow);
 		B_SBack.setFont(new Font("굴림", Font.BOLD, 50));
 		B_SBack.setBounds(14, 908, 90, 45);
+		B_SBack.setBorderPainted(false);  // 외곽선 없애주기
+		B_SBack.setContentAreaFilled(false);  // 버튼 투명 하게 
+		B_SBack.setFocusPainted(false);  // 선택하면 테두리 안 나오게
 		Psignup.add(B_SBack);
 		
-		JButton bnt_DoubleCheck = new JButton("중복확인");
-		bnt_DoubleCheck.setBounds(894, 471, 90, 41);
+		ImageIcon doubleCheck=new ImageIcon("D:\\2106_2118\\images\\doubleCheck.png");
+		JButton bnt_DoubleCheck = new JButton(doubleCheck);
+		bnt_DoubleCheck.setBounds(890, 370, 90, 41);
+		bnt_DoubleCheck.setBorderPainted(false);  // 외곽선 없애주기
+		bnt_DoubleCheck.setContentAreaFilled(false);  // 버튼 투명 하게 
+		bnt_DoubleCheck.setFocusPainted(false);  // 선택하면 테두리 안 나오게
 		Psignup.add(bnt_DoubleCheck);
 		Psignup.setVisible(false);
+		
 		//아이디 중복확인
 		bnt_DoubleCheck.addActionListener(new ActionListener() {
 			
@@ -233,17 +272,18 @@ public class SignIn_Up {
 
 			
 		});
-		
-		
-		
+	
 		
 		//==================================================  
 		
-		
-		
-		
-		
-		final JPanel Pmain = new JPanel();//첫화면
+		// 첫화면
+		final JPanel Pmain = new JPanel() {
+			public void paintComponent(Graphics g) {
+				g.drawImage(background.getImage(), 0, 0, null);
+				setOpaque(false);
+				super.paintComponent(g);
+			}
+		};
 		Pmain.setBackground(new Color(128,0,128));
 		Pmain.setBounds(0, 0, 1395, 965);
 		frame.getContentPane().add(Pmain);
@@ -251,23 +291,35 @@ public class SignIn_Up {
 		
 		JLabel L_PCroom = new JLabel("PC방");
 		L_PCroom.setForeground(Color.WHITE);
-		L_PCroom.setBounds(644, 145, 127, 134);
+		L_PCroom.setBounds(630, 110, 200, 134);
 		Pmain.add(L_PCroom);
-		L_PCroom.setFont(new Font("HY동녘M", Font.PLAIN, 50));
+		L_PCroom.setFont(new Font("HY동녘M", Font.PLAIN, 60));
 		
-		
-		B_member.setBounds(456, 508, 189, 73);
+		ImageIcon iconMember=new ImageIcon("D:\\2106_2118\\images\\member.png");
+		B_member=new JButton(iconMember);
+		B_member.setBounds(470, 400, 180, 80);
+		B_member.setBorderPainted(false);  // 외곽선 없애주기
+		B_member.setContentAreaFilled(false);  // 버튼 투명 하게 
+		B_member.setFocusPainted(false);  // 선택하면 테두리 안 나오게
 		Pmain.add(B_member);
 		B_member.setFont(new Font("굴림", Font.BOLD, 40));
 		
-		
-		B_Nmember.setBounds(736, 508, 181, 73);
+		ImageIcon notMember=new ImageIcon("D:\\2106_2118\\images\\notmember.png");
+		B_Nmember=new JButton(notMember);	
+		B_Nmember.setBounds(750, 400, 180, 80);
+		B_Nmember.setBorderPainted(false);  // 외곽선 없애주기
+		B_Nmember.setContentAreaFilled(false);  // 버튼 투명 하게 
+		B_Nmember.setFocusPainted(false);  // 선택하면 테두리 안 나오게
 		Pmain.add(B_Nmember);
 		B_Nmember.setFont(new Font("굴림", Font.BOLD, 40));
 		
-		JButton B_SignUp = new JButton("회원가입");//회원가입
+		ImageIcon signup1=new ImageIcon("D:\\2106_2118\\images\\signup_1.png");
+		B_SignUp = new JButton(signup1);//회원가입
 		B_SignUp.setFont(new Font("굴림", Font.BOLD, 40));
-		B_SignUp.setBounds(595, 704, 228, 73);
+		B_SignUp.setBounds(590, 550, 228, 90);
+		B_SignUp.setBorderPainted(false);  // 외곽선 없애주기
+		B_SignUp.setContentAreaFilled(false);  // 버튼 투명 하게 
+		B_SignUp.setFocusPainted(false);  // 선택하면 테두리 안 나오게
 		Pmain.add(B_SignUp);
 		frame.add(Pmain);
 		frame.setVisible(true);
