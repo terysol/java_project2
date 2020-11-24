@@ -102,8 +102,6 @@ public class SignIn_Up {
 		
 		//==================================================
 		
-		
-		
 		final JPanel Pmember = new JPanel() {
 			public void paintComponent(Graphics g) {
 				g.drawImage(background.getImage(), 0, 0, null);

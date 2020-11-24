@@ -30,7 +30,6 @@ public class Buy_Time implements ActionListener{
 	ImageIcon background=new ImageIcon("D:\\2106_2118\\images\\main.png");
 	ImageIcon iconSeat=new ImageIcon("D:\\2106_2118\\images\\seat.png");
 	ImageIcon iconFood=new ImageIcon("D:\\2106_2118\\images\\foodBtn.png");
-	ImageIcon iconSeat_1=new ImageIcon("D:\\2106_2118\\images\\passenger.png");
 
 	public Buy_Time() {
 		panel=new JPanel() {
@@ -55,7 +54,7 @@ public class Buy_Time implements ActionListener{
 		
 		
 		int j = 190;
-		for(int i = 0; i<8; i++) {
+		for(int i = 0; i<6; i++) {
 			seat[i] = new JButton() {
 				public void paintComponent(Graphics g) {
 					g.drawImage(iconSeat.getImage(), 0, 0, null);
@@ -85,7 +84,7 @@ public class Buy_Time implements ActionListener{
 		
 		
 		int k = 190;
-		for( int i = 8; i<16; i++) {
+		for( int i = 6; i<12; i++) {
 			seat[i] = new JButton() {
 				public void paintComponent(Graphics g) {
 					g.drawImage(iconSeat.getImage(), 0, 0, null);
@@ -97,7 +96,7 @@ public class Buy_Time implements ActionListener{
 			seat[i].setFocusPainted(false);
 			seat[i].setLayout(null);
 			l_seat[i] = new JLabel((i+1) + "¹ø");
-			l_seat[i].setBounds(45, -30, 100, 100);
+			l_seat[i].setBounds(44, -30, 100, 100);
 			l_seat[i].setForeground(Color.WHITE);
 			seat[i].setBounds(new Rectangle(k, 500, 120, 150));//55, 570, 160, 180
 			k+= 160;
@@ -112,6 +111,33 @@ public class Buy_Time implements ActionListener{
 			panel.add(seat[i]);
 			seat[i].addActionListener(this);
 			
+		}
+		int o = 85;
+		for(int i = 12; i<16; i++) {
+			seat[i] = new JButton() {
+				public void paintComponent(Graphics g) {
+					g.drawImage(iconSeat.getImage(), 0, 0, null);
+					setOpaque(false);
+					super.paintComponent(g);
+				}
+			};
+			seat[i].setBorderPainted(false);
+			seat[i].setFocusPainted(false);
+			seat[i].setLayout(null);
+			l_seat[i] = new JLabel((i+1) + "¹ø");
+			l_seat[i].setForeground(Color.WHITE);
+			l_seat[i].setBounds(40, -30, 100, 100);
+			seat[i].setBounds(new Rectangle(1200, o, 140, 160));//1167, 486, 160, 180
+			o+= 160;
+			seat[i].setBackground(new Color(255, 255, 228, 255));
+			l_seat[i].setFont(new Font("±¼¸²", Font.BOLD, 20));
+			use[i]=new JLabel();
+			use[i].setFont(new Font("±¼¸²", Font.BOLD, 15));
+			use[i].setBounds(40,40,60,40);
+			seat[i].add(l_seat[i]);
+			seat[i].add(use[i]);
+			panel.add(seat[i]);
+			seat[i].addActionListener(this);
 		}
 	
 		frame.getContentPane().add(panel);
@@ -163,7 +189,6 @@ public class Buy_Time implements ActionListener{
 				//System.out.println(seatNum);
 				seat[seatNum-1].setEnabled(false);
 				seat[seatNum-1].setFont(new Font("±¼¸²", Font.BOLD, 20));
-				//seat[seatNum-1].setForeground(Color.BLACK);
 				use[seatNum-1].setText("»ç¿ëÁß");
 			}
 			
@@ -178,8 +203,6 @@ public class Buy_Time implements ActionListener{
 		Client client=new Client();
 		client.setGui(b);
 		b.change();
-//		client.setGui(b);
-//		client.connect();
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -191,16 +214,11 @@ public class Buy_Time implements ActionListener{
 				m.setVisible(true);
 				seat[i].setEnabled(false);
 				seat[i].setFont(new Font("±¼¸²", Font.BOLD, 20));
-				//seat[i].setForeground(Color.BLACK);
 				use[i].setText("»ç¿ëÁß");
-				
-				//System.out.println(i);
 				break;
 				
 			}
 		}
-		
-		//m.setVisible(true);
 	}
 }
 
